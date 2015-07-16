@@ -20,18 +20,8 @@ public class FragmentIndex extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        TextView text = new TextView(this.getActivity());
-//        text.setText("Section");
-//        text.setGravity(Gravity.CENTER);
-        ListView list = new ListView(getActivity());
-        List<NavBarDomain> listArray = new ArrayList<NavBarDomain>();
-        NavigationAdapter navigationAdapter = new NavigationAdapter(getActivity()  , listArray);
 
-        listArray.add(new NavBarDomain("Home" , ""));
-        listArray.add(new NavBarDomain("Setting" , ""));
-        list.setAdapter(navigationAdapter);
-
-        return list;
+        return null;
     }
 
 }

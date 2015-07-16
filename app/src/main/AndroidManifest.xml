@@ -18,10 +18,11 @@
         </activity>
         <activity
             android:name=".Navigation.NavigationBar"
-            android:theme="@style/CustomHeaderLight" />
+            android:theme="@style/MainHeader" />
         <activity
-            android:name=".ChatActivity"
-            android:label="@string/title_activity_chat" >
+            android:name=".Chat.ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/ChatThemes">
         </activity>
     </application>
 

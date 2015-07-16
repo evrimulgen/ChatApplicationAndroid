@@ -1,18 +1,12 @@
 package my.chatapplication.Navigation;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.Contacts;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import my.chatapplication.ChatActivity;
+import my.chatapplication.Chat.ChatActivity;
 import my.chatapplication.R;
 
 /**
@@ -26,15 +20,10 @@ public class NavigationBar extends MaterialNavigationDrawer {
             View view = LayoutInflater.from(this).inflate(R.layout.custom_drawer,null);
             setDrawerHeaderCustom(view);
 
-            this.addSection(newSection("listView", new FragmentIndex()));
-            this.addSection(newSection("Chat" , new ChatActivity()));
-            // create sections
-//            this.addSection(newSection("Section 1", new FragmentIndex()));
-//            this.addSection(newSection("Section 2",new FragmentIndex()));
-//            this.addSection(newSection("Section 3", R.drawable.ic_mic_white_24dp,new FragmentIndex()).setSectionColor(Color.parseColor("#9c27b0")));
-//            this.addSection(newSection("Section",R.drawable.ic_hotel_grey600_24dp,new FragmentIndex()).setSectionColor(Color.parseColor("#03a9f4")));
+            this.addSection(newSection("Home", new FragmentIndex()));
+            this.addSection(newSection("Chat", new Intent(this, ChatActivity.class)));
 
-            // create bottom section
+            //this.addBottomSection(newSection("Bottom Section",R.drawable.ic_settings_black_24dp,new Intent(this,Settings.class)));
 
         }
 
