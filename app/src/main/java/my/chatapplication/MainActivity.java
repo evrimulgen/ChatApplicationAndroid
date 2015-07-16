@@ -1,4 +1,4 @@
-package firebase_login_demo_android.chatapplication;
+package my.chatapplication;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import firebase_login_demo_android.chatapplication.Navigation.NavigationBar;
+import my.chatapplication.Navigation.NavigationBar;
 
 
 public class MainActivity extends ActionBarActivity {

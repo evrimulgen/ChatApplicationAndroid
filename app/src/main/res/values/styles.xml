@@ -11,5 +11,4 @@
         <item name="colorAccent">#FFFFFF</item>
         <item name="drawerType">@integer/DRAWERTYPE_CUSTOM</item>
     </style>
-
 </resources>

@@ -1,8 +1,4 @@
-package firebase_login_demo_android.chatapplication.Navigation;
-
-import android.media.Image;
-import android.widget.ImageButton;
-import android.widget.TextView;
+package my.chatapplication.Navigation;
 
 /**
  * Created by nasser on 16/07/15.

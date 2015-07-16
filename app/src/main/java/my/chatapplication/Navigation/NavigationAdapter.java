@@ -1,4 +1,4 @@
-package firebase_login_demo_android.chatapplication.Navigation;
+package my.chatapplication.Navigation;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import firebase_login_demo_android.chatapplication.R;
+import my.chatapplication.R;
 
 /**
  * Created by nasser on 16/07/15.

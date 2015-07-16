@@ -1,4 +1,4 @@
-package firebase_login_demo_android.chatapplication.Navigation;
+package my.chatapplication.Navigation;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,9 +11,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
-import firebase_login_demo_android.chatapplication.ChatActivity;
-import firebase_login_demo_android.chatapplication.R;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+import my.chatapplication.ChatActivity;
+import my.chatapplication.R;
 
 /**
  * Created by nasser on 16/07/15.

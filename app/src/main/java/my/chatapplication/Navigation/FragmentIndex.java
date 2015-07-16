@@ -1,4 +1,4 @@
-package firebase_login_demo_android.chatapplication.Navigation;
+package my.chatapplication.Navigation;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

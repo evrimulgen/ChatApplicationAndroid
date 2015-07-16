@@ -1,4 +1,4 @@
-package firebase_login_demo_android.chatapplication;
+package my.chatapplication;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
