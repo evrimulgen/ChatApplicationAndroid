@@ -1,20 +1,23 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/chatColorPrimary</item>
+        <item name="android:textColorPrimary">@color/chatTextColorPrimary</item>
+        <item name="colorPrimaryDark">@color/chatColorPrimaryDark</item>
+        <item name="android:colorPrimaryDark">@color/chatColorPrimaryDark</item>
+        <item name="android:windowBackground">@color/chatWindowBackground</item>
+        <item name="android:navigationBarColor">@color/chatColorPrimaryDark</item>
+        <item name="android:statusBarColor">@color/chatColorPrimaryDark</item>
+        <item name="android:colorBackground">@color/chatWindowBackground</item>
+
     </style>
 
     <style name="MainHeader" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
-        <item name="colorPrimary">#FF8A65</item>
-        <item name="colorPrimaryDark">#FF5722</item>
+        <item name="colorPrimary">@color/chatColorPrimary</item>
+        <item name="colorPrimaryDark">@color/chatColorPrimaryDark</item>
         <item name="colorAccent">#BF360C</item>
         <item name="drawerType">@integer/DRAWERTYPE_CUSTOM</item>
     </style>
-    <style name="ChatThemes" parent="MaterialNavigationDrawerTheme.Light.DarkActionBar">
-        <item name="colorPrimary">#F4511E</item>
-        <item name="colorPrimaryDark">#FF5722</item>
-        <item name="colorAccent">#BF360C</item>
-        <item name="drawerType">@integer/DRAWERTYPE_CUSTOM</item>
-    </style>
+
 </resources>

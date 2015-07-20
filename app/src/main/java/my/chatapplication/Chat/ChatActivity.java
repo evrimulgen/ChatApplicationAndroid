@@ -1,10 +1,12 @@
 package my.chatapplication.Chat;
 
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -23,17 +25,20 @@ public class ChatActivity extends ActionBarActivity {
 
     private EditText editText;
     private ImageButton send;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         intListAdapter();
         initFromXmlAndInitActionLister();
+
     }
 
 
     private void initFromXmlAndInitActionLister() {
         editText = (EditText) findViewById(R.id.messageInput);
+
         send = (ImageButton) findViewById(R.id.sendButton);
 
         send.setOnClickListener(new View.OnClickListener() {

@@ -1,28 +1,23 @@
 package my.chatapplication;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import my.chatapplication.Navigation.NavigationBar;
 
-
-public class MainActivity extends ActionBarActivity {
+public class Test extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this , NavigationBar.class);
-        startActivity(intent);
+        setContentView(R.layout.activity_test);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_test, menu);
         return true;
     }
 

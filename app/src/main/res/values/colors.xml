@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="chatColorPrimaryDark">#E65100</color>
+    <color name="chatColorPrimary">#EF6C00</color>
+    <color name="chatTextColorPrimary">#FFF3E0</color>
+    <color name="chatWindowBackground">#FFF3E0</color>
+    <color name="chatNavigationBarColor">#EF6C00</color>
+    <color name="chatMessageBar">#FFB74D</color>
+
+    <color name="textColor">#000</color>
+    <color name="textHint">#FF9800</color>
+
+    <color name="buttonColor">#FFA726</color>
+    <color name="buttonTextColor">#ffffff</color>
+</resources>
