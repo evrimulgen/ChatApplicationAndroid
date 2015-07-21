@@ -20,7 +20,7 @@ tools:context="my.chatapplication.Controller.LoginController">
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Chat Application"
-        android:id="@+id/textView2"
+        android:id="@+id/login_ChatApplication"
         android:textSize="30dp"
         android:textColor="@color/textColor" />
 
@@ -54,7 +54,7 @@ tools:context="my.chatapplication.Controller.LoginController">
                 android:orientation="vertical">
 
                 <AutoCompleteTextView
-                    android:id="@+id/email"
+                    android:id="@+id/login_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
@@ -66,7 +66,7 @@ tools:context="my.chatapplication.Controller.LoginController">
                     android:textColor="@color/textColor" />
 
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/login_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -80,7 +80,7 @@ tools:context="my.chatapplication.Controller.LoginController">
                     android:textColor="@color/textColor" />
 
                 <Button
-                    android:id="@+id/sign_in_button"
+                    android:id="@+id/login_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/action_sign_in"
@@ -100,12 +100,13 @@ tools:context="my.chatapplication.Controller.LoginController">
     android:layout_weight="1"
     android:gravity="bottom|center_horizontal">
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign up"
+        android:background="@color/chatWindowBackground"
         android:id="@+id/signUpTextView"
         android:autoLink="web"
-        android:textColor="#ffffffff" />
+        android:textColor="#000" />
 </LinearLayout>
 </LinearLayout>

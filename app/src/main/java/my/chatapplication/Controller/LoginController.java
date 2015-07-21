@@ -57,9 +57,9 @@ public class LoginController extends ActionBarActivity{
 
 
     public void connectWithXml() {
-        emailTextView = (AutoCompleteTextView) findViewById(R.id.email);
-        passwordTextView = (EditText) findViewById(R.id.password);
-        loginButton = (Button) findViewById(R.id.sign_in_button);
+        emailTextView = (AutoCompleteTextView) findViewById(R.id.login_email);
+        passwordTextView = (EditText) findViewById(R.id.login_password);
+        loginButton = (Button) findViewById(R.id.login_button);
         loginFormView = findViewById(R.id.login_form);
         progressView = findViewById(R.id.login_progress);
     }
