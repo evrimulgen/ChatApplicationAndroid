@@ -3,7 +3,9 @@ package my.chatapplication.Controller;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.os.Build;
+import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -21,27 +23,38 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import android.os.Handler;
 
+import my.chatapplication.Model.USMModule;
 import my.chatapplication.R;
 //http://javapapers.com/android/beautiful-android-login-screen-design-tutorial/
-public class SignInController extends ActionBarActivity{
+public class LoginController extends ActionBarActivity{
 
     private View loginFormView;
     private View progressView;
     private AutoCompleteTextView emailTextView;
     private EditText passwordTextView;
-    private TextView signUpTextView;
     private Button loginButton;
+
+    private USMModule USMModule;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in_controller);
+        setContentView(R.layout.activity_sign_in);
 
         connectWithXml();
         onClickListner();
 
+        if(messageHandler != null)
+            USMModule = new USMModule(this , messageHandler);
+        else
+            showToastMessage("mesage hundler is null");
+
+        context = this;
     }
+
 
     public void connectWithXml() {
         emailTextView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -129,13 +142,13 @@ public class SignInController extends ActionBarActivity{
             focusView.requestFocus();
         } else {
             showProgress(true);
-            Toast.makeText(this , "done" , Toast.LENGTH_LONG).show();
+            USMModule.checkeEmailAndPassword(email , password);
         }
     }
 
     private boolean isEmailValid(String email) {
         //add your own logic
-        return email.contains("@");
+        return email.contains("@") && email.contains(".");
     }
 
     private boolean isPasswordValid(String password) {
@@ -180,10 +193,13 @@ public class SignInController extends ActionBarActivity{
         }
     }
 
+    /**
+     * @param emailAddressCollection sned list of string to autocomplete
+     */
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(SignInController.this,
+                new ArrayAdapter<String>(LoginController.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         emailTextView.setAdapter(adapter);
@@ -198,5 +214,24 @@ public class SignInController extends ActionBarActivity{
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }
+
+    public void showToastMessage(String msg){
+        Toast.makeText(context , msg , Toast.LENGTH_LONG).show();
+    }
+
+    private Handler messageHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg){
+            showProgress(false);
+            if(((Boolean)msg.obj) == false){
+                showToastMessage("Server unavilable");
+            }else{
+                showToastMessage("welcome");
+            }
+        }
+
+    };
+
 
 }

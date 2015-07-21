@@ -17,5 +17,6 @@
     <string name="invalid_password">Password is too short</string>
     <string name="incorrect_password">Password is incorrect</string>
     <string name="field_required">This field is required</string>
-
+    <string name="fireBaseUrl">https://sngvsimplechatapp.firebaseIO.com</string>
+    <string name="title_activity_sign_up">Sign Up</string>
 </resources>
