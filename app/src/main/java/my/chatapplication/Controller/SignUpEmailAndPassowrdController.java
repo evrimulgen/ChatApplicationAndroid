@@ -17,20 +17,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-
 import my.chatapplication.Domain.User;
 import my.chatapplication.Model.UMSModule;
 import my.chatapplication.R;
 
-public class SignUpController extends ActionBarActivity {
+public class SignUpEmailAndPassowrdController extends ActionBarActivity {
     private View signUpFormView;
     private View progressView;
     private AutoCompleteTextView emailTextView;
@@ -240,13 +237,13 @@ public class SignUpController extends ActionBarActivity {
         @Override
         public void handleMessage(Message msg){
             showProgress(false);
-            if(((Integer)msg.obj) == -18){
+            if(msg.arg1 == -18){
                 View focusView = null;
                 emailTextView.setError(getString(R.string.email_alreay_exist));
                 focusView = emailTextView;
                 focusView.requestFocus();
-            }else{
-                Intent intent = new Intent(context , UserDomainController.class);
+            }else if (msg.arg1 == 1){
+                Intent intent = new Intent(context , SignUpUserInfoController.class);
                 intent.putExtra(User.EMAIL, emailTextView.getText().toString());
                 intent.putExtra(User.PASSWORD , passwordTextView.getText().toString());
                 context.startActivity(intent);

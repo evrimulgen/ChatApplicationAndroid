@@ -19,12 +19,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.firebase.client.FirebaseError;
+
 import my.chatapplication.Chat.ChatActivity;
 import my.chatapplication.Domain.User;
 import my.chatapplication.Model.UMSModule;
 import my.chatapplication.R;
 
-public class UserDomainController extends ActionBarActivity {
+public class SignUpUserInfoController extends ActionBarActivity {
     private User user;
     private EditText username;
     private EditText telephone;
@@ -195,11 +197,12 @@ public class UserDomainController extends ActionBarActivity {
         @Override
         public void handleMessage(Message msg){
             showProgress(false);
-            if((Integer)msg.obj == 1){
+            if(msg.arg1 == 1){
                 Intent intent = new Intent(context, ChatActivity.class);
                 context.startActivity(intent);
             }else {
                 showToastMessage("Server unavailable");
+                showToastMessage(((String)msg.obj));
             }
         }
     };

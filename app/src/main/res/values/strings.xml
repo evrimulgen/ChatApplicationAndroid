@@ -34,6 +34,7 @@
     <string name="prompt_telephone">enter your telephone number</string>
     <string name="action_complete_userDomain">complete</string>
     <string name="invalid_telephone_number">phone number invalid</string>
+    <string name="title_activity_user_profile">"Profile "</string>
 
 
 </resources>

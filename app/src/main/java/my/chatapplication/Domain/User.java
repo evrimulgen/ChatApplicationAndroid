@@ -17,6 +17,7 @@ public class User {
     private String password;
     private String telephone;
     private String name;
+    private Object data;
 
     public String getEmail() {
         return email;
@@ -77,5 +78,9 @@ public class User {
         mp.put(PASSWORD , password);
         mp.put(EMAIL , email);
         return mp;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 }

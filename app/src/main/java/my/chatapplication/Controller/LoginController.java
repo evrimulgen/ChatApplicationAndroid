@@ -225,11 +225,11 @@ public class LoginController extends ActionBarActivity{
         public void handleMessage(Message msg){
             View focusView = null;
 
-            if(((Integer)msg.obj) == -16){
+            if(msg.arg1 == -16){
                 passwordTextView.setError(getString(R.string.password_is_incorrect));
                 focusView = passwordTextView;
                 focusView.requestFocus();
-            }else if ((Integer)msg.obj == -17){
+            }else if (msg.arg1 == -17){
                 emailTextView.setError(getString(R.string.user_not_exist));
                 focusView = emailTextView;
                 focusView.requestFocus();

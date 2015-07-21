@@ -36,12 +36,16 @@
                 android:value="my.chatapplication.Controller.HomeController" />
         </activity>
         <activity
-            android:name=".Controller.SignUpController"
+            android:name=".Controller.SignUpEmailAndPassowrdController"
             android:label="@string/title_activity_sign_up" >
         </activity>
         <activity
-            android:name=".Controller.UserDomainController"
+            android:name=".Controller.SignUpUserInfoController"
             android:label="@string/title_activity_user_domain_controller" >
+        </activity>
+        <activity
+            android:name=".Controller.UserProfileController"
+            android:label="@string/title_activity_user_profile" >
         </activity>
     </application>
 

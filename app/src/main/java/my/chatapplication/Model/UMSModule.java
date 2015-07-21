@@ -8,8 +8,11 @@ import android.os.Message;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.security.MessageDigest;
 import java.util.HashMap;
@@ -40,14 +43,16 @@ public class UMSModule {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 Message message = loginHandler.obtainMessage();
-                message.obj = 1;
+                message.arg1 = 1;
+                message.obj = result;
                 loginHandler.sendMessage(message);
             }
 
             @Override
             public void onError(FirebaseError firebaseError) {
                 Message message = loginHandler.obtainMessage();
-                message.obj = firebaseError.getCode();
+                message.arg1 = firebaseError.getCode();
+                message.obj = firebaseError.getMessage();
                 loginHandler.sendMessage(message);
             }
         });
@@ -59,14 +64,16 @@ public class UMSModule {
             @Override
             public void onAuthenticated(AuthData authData) {
                 Message message = loginHandler.obtainMessage();
-                message.obj = 1;
+                message.arg1 = 1;
+                message.obj = authData;
                 loginHandler.sendMessage(message);
             }
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 Message message = loginHandler.obtainMessage();
-                message.obj = firebaseError.getCode();
+                message.arg1 = firebaseError.getCode();
+                message.obj = firebaseError.getMessage();
                 loginHandler.sendMessage(message);
             }
         });
@@ -82,10 +89,12 @@ public class UMSModule {
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 Message message = loginHandler.obtainMessage();
                 try {
-                    message.obj =  firebaseError.getCode();
+                    message.arg1 = firebaseError.getCode();
+                    message.obj = firebaseError.getMessage();
                     loginHandler.sendMessage(message);
-                }catch (Exception e){
-                    message.obj =  1;
+                } catch (Exception e) {
+                    message.obj = 1;
+                    message.obj = firebase.getKey();
                     loginHandler.sendMessage(message);
                 }
 
@@ -101,6 +110,30 @@ public class UMSModule {
         Firebase userUpdate = myFirebaseRef.child("users").child(user.getEmail());
         Map<String, Object> userdata = user.convertToHashMap();
         userUpdate.updateChildren(userdata);
+    }
+
+    public void getUser(String email){
+
+        Firebase _user = myFirebaseRef.child("users").child(removeDot(email));
+
+        _user.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Message message = loginHandler.obtainMessage();
+                message.arg1 = 1;
+                message.obj = dataSnapshot.getValue();
+                loginHandler.sendMessage(message);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Message message = loginHandler.obtainMessage();
+                message.arg1 = -1;
+                message.obj = firebaseError.getMessage();
+                loginHandler.sendMessage(message);
+            }
+        });
     }
 
     public String removeDot(String msg){

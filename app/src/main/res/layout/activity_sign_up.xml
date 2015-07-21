@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    tools:context="my.chatapplication.Controller.SignUpController">
+    tools:context="my.chatapplication.Controller.SignUpEmailAndPassowrdController">
 
     <ProgressBar
         android:id="@+id/signUp_progress"
