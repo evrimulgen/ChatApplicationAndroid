@@ -11,17 +11,29 @@
     <string name="title_activity_sign_in_controller">Sign In</string>
     <string name="title_activity_sign_up">Sign Up</string>
 
+    <string name="title_activity_user_domain_controller">User Info</string>
+
     <!-- UMS authentication -->
+    <string name="action_sign_up">Sign Up</string>
+    <string name="action_sign_in">Login</string>
+
     <string name="prompt_email">enter your email</string>
     <string name="prompt_password">enter your password</string>
     <string name="prompt_repassword">repeat your password</string>
-    <string name="action_sign_in">Login</string>
-    <string name="invalid_email">This email address is invalid</string>
-    <string name="invalid_password">Password is too short</string>
-    <string name="incorrect_password">Password is incorrect</string>
-    <string name="field_required">This field is required</string>
-    <string name="action_sign_up">Sign Up</string>
 
+    <string name="field_required">This field is required</string>
+
+    <string name="invalid_password">Password is too short</string>
+    <string name="invalid_repassword">repassword doesn\'t match password</string>
+    <string name="password_is_incorrect">check your password</string>
+
+    <string name="invalid_email">This email address is invalid</string>
+    <string name="user_not_exist">user email doesn\'t exist</string>
+    <string name="email_alreay_exist">email already exist</string>
+    <string name="prompt_username">enter your name</string>
+    <string name="prompt_telephone">enter your telephone number</string>
+    <string name="action_complete_userDomain">complete</string>
+    <string name="invalid_telephone_number">phone number invalid</string>
 
 
 </resources>

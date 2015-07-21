@@ -28,10 +28,6 @@
             android:parentActivityName=".Controller.HomeController"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".Test"
-            android:label="@string/title_activity_test" >
-        </activity>
-        <activity
             android:name=".Controller.LoginController"
             android:label="@string/title_activity_sign_in_controller"
             android:parentActivityName=".Controller.HomeController" >
@@ -40,8 +36,12 @@
                 android:value="my.chatapplication.Controller.HomeController" />
         </activity>
         <activity
-            android:name=".Controller.SignUpActivity"
+            android:name=".Controller.SignUpController"
             android:label="@string/title_activity_sign_up" >
+        </activity>
+        <activity
+            android:name=".Controller.UserDomainController"
+            android:label="@string/title_activity_user_domain_controller" >
         </activity>
     </application>
 

@@ -5,75 +5,107 @@ import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
 import java.security.MessageDigest;
+import java.util.HashMap;
 import java.util.Map;
 
 import my.chatapplication.Controller.LoginController;
+import my.chatapplication.Domain.User;
 import my.chatapplication.R;
 
 /**
  * Created by nasser on 20/07/15.
  */
-public class USMModule {
+public class UMSModule {
 
     private Context context;
     private Firebase myFirebaseRef;
     private Handler loginHandler;
 
-    public USMModule(Context context, Handler handler){
+    public UMSModule(Context context, Handler handler){
         this.context = context;
         Firebase.setAndroidContext(context);
         myFirebaseRef = new Firebase(context.getString(R.string.fireBaseUrl));
         loginHandler = handler;
     }
 
-    public boolean createUser(String email , String password){
-        final boolean[] valid = new boolean[1];
-
+    public void signUp(String email, String password){
         myFirebaseRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
-                System.out.println("Successfully created user account with uid: " + result.get("uid"));
                 Message message = loginHandler.obtainMessage();
-                message.obj = true;
+                message.obj = 1;
                 loginHandler.sendMessage(message);
             }
+
             @Override
             public void onError(FirebaseError firebaseError) {
-                // there was an error
                 Message message = loginHandler.obtainMessage();
-                message.obj = false;
+                message.obj = firebaseError.getCode();
                 loginHandler.sendMessage(message);
             }
         });
-        return true;
     }
 
-    public boolean checkeEmailAndPassword(String email , String password){
+    public void login(String email, String password){
 
         myFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
-                System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
                 Message message = loginHandler.obtainMessage();
-                message.obj = true;
+                message.obj = 1;
                 loginHandler.sendMessage(message);
             }
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 Message message = loginHandler.obtainMessage();
-                message.obj = false;
+                message.obj = firebaseError.getCode();
                 loginHandler.sendMessage(message);
             }
         });
-
-        return true;
     }
 
+    public void saveUser(User user){
+        Firebase usersave = myFirebaseRef.child("users").child(removeDot(user.getEmail()));
+        usersave.setValue(user);
+
+        usersave.setValue(user, new Firebase.CompletionListener() {
+
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                Message message = loginHandler.obtainMessage();
+                try {
+                    message.obj =  firebaseError.getCode();
+                    loginHandler.sendMessage(message);
+                }catch (Exception e){
+                    message.obj =  1;
+                    loginHandler.sendMessage(message);
+                }
+
+            }
+        });
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(context , message , Toast.LENGTH_LONG).show();
+    }
+
+    public void updateUser(User user){
+        Firebase userUpdate = myFirebaseRef.child("users").child(user.getEmail());
+        Map<String, Object> userdata = user.convertToHashMap();
+        userUpdate.updateChildren(userdata);
+    }
+
+    public String removeDot(String msg){
+        String newMsg = msg.replace('.','@');
+        System.out.println(newMsg);
+        return newMsg;
+    }
 }

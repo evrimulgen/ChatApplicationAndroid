@@ -4,7 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
@@ -23,18 +25,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
-import android.os.Handler;
 
+import my.chatapplication.Domain.User;
 import my.chatapplication.Model.UMSModule;
 import my.chatapplication.R;
-//http://javapapers.com/android/beautiful-android-login-screen-design-tutorial/
-public class LoginController extends ActionBarActivity{
 
-    private View loginFormView;
+public class SignUpController extends ActionBarActivity {
+    private View signUpFormView;
     private View progressView;
     private AutoCompleteTextView emailTextView;
     private EditText passwordTextView;
-    private Button loginButton;
+    private EditText repasswordTextView;
+    private Button signUpButton;
 
     private UMSModule UMSModule;
     private Context context;
@@ -42,7 +44,7 @@ public class LoginController extends ActionBarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_up);
 
         connectWithXml();
         onClickListner();
@@ -55,13 +57,13 @@ public class LoginController extends ActionBarActivity{
         context = this;
     }
 
-
     public void connectWithXml() {
-        emailTextView = (AutoCompleteTextView) findViewById(R.id.login_email);
-        passwordTextView = (EditText) findViewById(R.id.login_password);
-        loginButton = (Button) findViewById(R.id.login_button);
-        loginFormView = findViewById(R.id.login_form);
-        progressView = findViewById(R.id.login_progress);
+        emailTextView = (AutoCompleteTextView) findViewById(R.id.signUp_email);
+        passwordTextView = (EditText) findViewById(R.id.signUp_password);
+        repasswordTextView = (EditText) findViewById(R.id.signUp_rePassword);
+        signUpButton = (Button) findViewById(R.id.signUp_button);
+        signUpFormView = findViewById(R.id.signUp_form);
+        progressView = findViewById(R.id.signUp_progress);
     }
 
     public void onClickListner(){
@@ -69,17 +71,17 @@ public class LoginController extends ActionBarActivity{
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_NULL) {
-                    initLogin();
+                    initSignUp();
                     return true;
                 }
                 return false;
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initLogin();
+                initSignUp();
             }
         });
 
@@ -88,7 +90,7 @@ public class LoginController extends ActionBarActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_sign_in, menu);
+        getMenuInflater().inflate(R.menu.menu_sign_up, menu);
         return true;
     }
 
@@ -110,22 +112,17 @@ public class LoginController extends ActionBarActivity{
     /**
      * Validate Login form and authenticate.
      */
-    public void initLogin() {
+    public void initSignUp() {
 
         emailTextView.setError(null);
         passwordTextView.setError(null);
 
         String email = emailTextView.getText().toString();
         String password = passwordTextView.getText().toString();
+        String repasword = repasswordTextView.getText().toString();
 
         boolean cancelLogin = false;
         View focusView = null;
-
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            passwordTextView.setError(getString(R.string.invalid_password));
-            focusView = passwordTextView;
-            cancelLogin = true;
-        }
 
         if (TextUtils.isEmpty(email)) {
             emailTextView.setError(getString(R.string.field_required));
@@ -137,12 +134,39 @@ public class LoginController extends ActionBarActivity{
             cancelLogin = true;
         }
 
+        if (TextUtils.isEmpty(password)) {
+            passwordTextView.setError(getString(R.string.field_required));
+            focusView = passwordTextView;
+            cancelLogin = true;
+        }else if (!isPasswordValid(password)){
+            passwordTextView.setError(getString(R.string.field_required));
+            focusView = passwordTextView;
+            cancelLogin = true;
+        }
+
+        if (TextUtils.isEmpty(repasword)) {
+            repasswordTextView.setError(getString(R.string.field_required));
+            focusView = repasswordTextView;
+            cancelLogin = true;
+        } else if (!isPasswordValid(repasword)) {
+            repasswordTextView.setError(getString(R.string.invalid_password));
+            focusView = repasswordTextView;
+            cancelLogin = true;
+        }
+
+        if(!cancelLogin && !comparePassword(password , repasword)){
+            repasswordTextView.setError(getString(R.string.invalid_repassword));
+            focusView = repasswordTextView;
+            cancelLogin = true;
+        }
+
+
         if (cancelLogin) {
             // error in login
             focusView.requestFocus();
         } else {
             showProgress(true);
-            UMSModule.login(email, password);
+            UMSModule.signUp(email, password);
         }
     }
 
@@ -154,6 +178,10 @@ public class LoginController extends ActionBarActivity{
     private boolean isPasswordValid(String password) {
         //add your own logic
         return password.length() > 4;
+    }
+
+    private boolean comparePassword(String password , String repassword) {
+        return password.equals(repassword);
     }
 
     /**
@@ -168,12 +196,12 @@ public class LoginController extends ActionBarActivity{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            loginFormView.animate().setDuration(shortAnimTime).alpha(
+            signUpFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            signUpFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    signUpFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -189,20 +217,8 @@ public class LoginController extends ActionBarActivity{
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            signUpFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
-    }
-
-    /**
-     * @param emailAddressCollection sned list of string to autocomplete
-     */
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginController.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        emailTextView.setAdapter(adapter);
     }
 
     private interface ProfileQuery {
@@ -216,29 +232,26 @@ public class LoginController extends ActionBarActivity{
     }
 
     public void showToastMessage(String msg){
-        Toast.makeText(context , msg , Toast.LENGTH_LONG).show();
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
     private Handler messageHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg){
-            View focusView = null;
-
-            if(((Integer)msg.obj) == -16){
-                passwordTextView.setError(getString(R.string.password_is_incorrect));
-                focusView = passwordTextView;
-                focusView.requestFocus();
-            }else if ((Integer)msg.obj == -17){
-                emailTextView.setError(getString(R.string.user_not_exist));
+            showProgress(false);
+            if(((Integer)msg.obj) == -18){
+                View focusView = null;
+                emailTextView.setError(getString(R.string.email_alreay_exist));
                 focusView = emailTextView;
                 focusView.requestFocus();
-            } else{
-                showToastMessage("welcome");
+            }else{
+                Intent intent = new Intent(context , UserDomainController.class);
+                intent.putExtra(User.EMAIL, emailTextView.getText().toString());
+                intent.putExtra(User.PASSWORD , passwordTextView.getText().toString());
+                context.startActivity(intent);
             }
-            showProgress(false);
         }
-
     };
 
 

@@ -8,8 +8,9 @@ import android.view.View;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import my.chatapplication.Chat.ChatActivity;
 import my.chatapplication.Controller.LoginController;
+import my.chatapplication.Controller.SignUpController;
 import my.chatapplication.R;
-import my.chatapplication.Test;
+
 
 /**
  * Created by nasser on 16/07/15.
@@ -24,9 +25,8 @@ public class NavigationBar extends MaterialNavigationDrawer {
 
             this.addSection(newSection("Home", new FragmentIndex()));
             this.addSection(newSection("Chat", new Intent(this, ChatActivity.class)));
-            this.addSection(newSection("Test", new Intent(this, Test.class)));
-            this.addSection(newSection("SignIn", new Intent(this, LoginController.class)));
-
+            this.addSection(newSection("Login", new Intent(this, LoginController.class)));
+            this.addSection(newSection("SignUp", new Intent(this, SignUpController.class)));
             //this.addBottomSection(newSection("Bottom Section",R.drawable.ic_settings_black_24dp,new Intent(this,Settings.class)));
 
         }
