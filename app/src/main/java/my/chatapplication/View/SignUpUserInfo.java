@@ -3,15 +3,11 @@ package my.chatapplication.View;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,32 +16,29 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import my.chatapplication.Chat.ChatActivity;
+import my.chatapplication.Constant.CLASSES;
+import my.chatapplication.Constant.VALIDATION;
+import my.chatapplication.Controller.UserController;
 import my.chatapplication.DataHolder.User;
-import my.chatapplication.Model.UMSModule;
 import my.chatapplication.R;
 
-public class SignUpUserInfo extends ActionBarActivity {
+public class SignUpUserInfo extends ActionBarActivity implements ChatView{
     private User user;
-    private EditText username;
-    private EditText telephone;
+    private EditText nameTextEdit;
+    private EditText telephoneTextEdit;
     private Button complete;
 
     private View userDomainView;
     private View progressView;
 
-    private UMSModule UmsModule;
-    private Context context;
-
+    private UserController userController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_domain);
-        context = this;
-//        if(messageHandler != null)
-//            UmsModule = new UMSModule(this , messageHandler);
-//        else
-//            showToastMessage("mesage hundler is null");
+
+        userController = new UserController(this , CLASSES.SIGNUP_USERINFO , this);
 
         connectWithXml();
         clickListnerInit();
@@ -61,55 +54,28 @@ public class SignUpUserInfo extends ActionBarActivity {
     }
 
     private void initUserInfo() {
-//        fillUserObject();
-//        telephone.setError(null);
-//        username.setError(null);
-//
-//        String name = username.getText().toString();
-//        String telep = telephone.getText().toString();
-//
-//        boolean cancelLogin = false;
-//        View focusView = null;
-//
-//        if (TextUtils.isEmpty(telep)) {
-//            telephone.setError(getString(R.string.field_required));
-//            focusView = telephone;
-//            cancelLogin = true;
-//        } else if (!isTelephoneValid(telep)) {
-//            telephone.setError(getString(R.string.invalid_telephone_number));
-//            focusView = telephone;
-//            cancelLogin = true;
-//        }
-//        if (TextUtils.isEmpty(name)) {
-//            username.setError(getString(R.string.field_required));
-//            focusView = username;
-//            cancelLogin = true;
-//        }
-//
-//        if (cancelLogin) {
-//            focusView.requestFocus();
-//        } else {
-//            showProgress(true);
-//            UmsModule.saveUser(user);
-//        }
+        String name = nameTextEdit.getText().toString();
+        String telephone = telephoneTextEdit.getText().toString();
+        showProgress(true);
+        userController.saveInfo(fillUserObject());
     }
 
     private boolean isTelephoneValid(String telep) {
         return true;
     }
 
-    private void fillUserObject() {
+    private User fillUserObject() {
         String email = getIntent().getExtras().getString(User.EMAIL);
         String password = getIntent().getExtras().getString(User.PASSWORD);
-        String telep = telephone.getText().toString();
-        String name = username.getText().toString();
+        String telep = telephoneTextEdit.getText().toString();
+        String name = nameTextEdit.getText().toString();
 
-        user = new User(email , password , telep , name);
+        return new User(email , password , telep , name);
     }
 
     private void connectWithXml() {
-        username = (EditText) findViewById(R.id.userDomain_username);
-        telephone = (EditText) findViewById(R.id.userDomain_telephone);
+        nameTextEdit = (EditText) findViewById(R.id.userDomain_username);
+        telephoneTextEdit = (EditText) findViewById(R.id.userDomain_telephone);
         complete = (Button) findViewById(R.id.userDomain_complete);
 
         userDomainView = findViewById(R.id.userDomain_form);
@@ -176,34 +142,36 @@ public class SignUpUserInfo extends ActionBarActivity {
         }
     }
 
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
     public void showToastMessage(String msg){
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
-    private Handler messageHandler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+        showProgress(false);
 
-        @Override
-        public void handleMessage(Message msg){
-            showProgress(false);
-            if(msg.arg1 == 1){
-                Intent intent = new Intent(context, ChatActivity.class);
-                context.startActivity(intent);
-            }else {
-                showToastMessage("Server unavailable");
-                showToastMessage(((String)msg.obj));
-            }
+        View focusView = null;
+
+        switch (((VALIDATION)msg.obj)){
+            case NAME_REQUIRED:
+                nameTextEdit.setError(getString(R.string.name_is_required));
+                focusView = nameTextEdit;
+                break;
+            case ACCEPTED:
+                Intent intent = new Intent(this , ChatActivity.class);
+                startActivity(intent);
+                return ;
+            case TELEPHONE_NUMBER_REQUIRED:
+                telephoneTextEdit.setError(getString(R.string.telephone_is_required));
+                focusView = telephoneTextEdit;
+                break;
+            case TELEPHONE_NUMBER_NVALID:
+                telephoneTextEdit.setError(getString(R.string.telephone_is_required));
+                focusView = telephoneTextEdit;
+                break;
         }
-    };
 
+        focusView.requestFocus();
 
+    }
 }

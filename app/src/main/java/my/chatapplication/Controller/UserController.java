@@ -6,12 +6,15 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import my.chatapplication.DataHolder.User;
 import my.chatapplication.View.ChatView;
 import my.chatapplication.Constant.CLASSES;
 import my.chatapplication.Constant.VALIDATION;
 import my.chatapplication.Model.UMSModule;
 import my.chatapplication.View.Login;
 import my.chatapplication.View.SignUpEmailAndPassowrd;
+import my.chatapplication.View.SignUpUserInfo;
+import my.chatapplication.View.UserProfile;
 
 /**
  * Created by nasser on 22/07/15.
@@ -30,6 +33,12 @@ public class UserController extends Handler {
                 break;
             case SIGNUP_EMAIL_PASSWORD:
                 this.classView = ((SignUpEmailAndPassowrd)classView);
+                break;
+            case SIGNUP_USERINFO:
+                this.classView = ((SignUpUserInfo)classView);
+                break;
+            case USER_PROFILE:
+                this.classView = ((UserProfile)classView);
                 break;
         }
         uModule = new UMSModule(this , context);
@@ -98,7 +107,7 @@ public class UserController extends Handler {
         switch (status){
             case ACCEPTED:
                 // showToastMessage("Accepted state in UserControll and start login");
-                uModule.signUp(email , password);
+                uModule.signUp(email, password);
                 break;
             default:
                 // showToastMessage("false and handle message");
@@ -116,5 +125,36 @@ public class UserController extends Handler {
 
     private void showToastMessage(String s) {
         Toast.makeText(context , s , Toast.LENGTH_LONG).show();
+    }
+
+    public void saveInfo(User user) {
+        Message msg = new Message();
+        if(TextUtils.isEmpty(user.getName())){
+            msg.obj = VALIDATION.NAME_REQUIRED;
+            classView.handleMessage(msg);
+            return ;
+        }
+
+        if(TextUtils.isEmpty(user.getTelephone())){
+            msg.obj = VALIDATION.TELEPHONE_NUMBER_REQUIRED;
+            classView.handleMessage(msg);
+            return ;
+        }
+
+        if(!isTelephoneValid(user.getTelephone())){
+            msg.obj = VALIDATION.TELEPHONE_NUMBER_NVALID;
+            classView.handleMessage(msg);
+            return ;
+        }
+
+        uModule.signUp(user);
+    }
+
+    private boolean isTelephoneValid(String telephone) {
+        return true;
+    }
+
+    public void getUser(String email) {
+        uModule.getUser(email);
     }
 }

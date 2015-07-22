@@ -61,7 +61,7 @@
                     android:id="@+id/userDomain_telephone"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:hint="@string/prompt_telephone"
+                    android:hint="@string/telephone_is_required"
                     android:imeActionLabel="@string/action_sign_up"
                     android:imeOptions="actionUnspecified"
                     android:inputType="phone"

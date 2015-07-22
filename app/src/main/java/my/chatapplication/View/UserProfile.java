@@ -9,29 +9,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import my.chatapplication.Constant.CLASSES;
+import my.chatapplication.Controller.UserController;
 import my.chatapplication.Model.UMSModule;
 import my.chatapplication.R;
 
-public class UserProfile extends ActionBarActivity {
-    private UMSModule umsModule;
-    private Context context;
+public class UserProfile extends ActionBarActivity implements ChatView{
+    private UserController userController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-
-//        context = this;
-//        if(messageHandler != null)
-//            umsModule = new UMSModule(this , messageHandler);
-//        else
-//            showToastMessage("mesage hundler is null");
-//
-//        try {
-//            umsModule.getUser("ahmed@ahmed.com");
-//        }catch (Exception e) {
-//            showToastMessage(e.toString());
-//        }
+        userController = new UserController(this , CLASSES.USER_PROFILE , this);
+        userController.getUser(getIntent().getExtras().getString("email"));
     }
 
     private void showToastMessage(String s) {
@@ -60,15 +51,8 @@ public class UserProfile extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private Handler messageHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg){
-            if(msg.arg1 == 1){
-                showToastMessage(msg.obj.toString());
-            }else if(msg.arg1 == -1){
-                showToastMessage("Server unavailable");
-            }
-        }
-    };
+    @Override
+    public void handleMessage(Message msg) {
+        showToastMessage(msg.obj.toString());
+    }
 }

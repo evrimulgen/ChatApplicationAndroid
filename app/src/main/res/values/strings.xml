@@ -33,10 +33,11 @@
     <string name="user_not_exist">user email doesn\'t exist</string>
     <string name="email_alreay_exist">email already exist</string>
     <string name="prompt_username">enter your name</string>
-    <string name="prompt_telephone">enter your telephone number</string>
+    <string name="telephone_is_required">telephone number is required</string>
     <string name="action_complete_userDomain">complete</string>
     <string name="invalid_telephone_number">phone number invalid</string>
     <string name="title_activity_user_profile">"Profile "</string>
+    <string name="name_is_required">name is required</string>
 
 
 </resources>

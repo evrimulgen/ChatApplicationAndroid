@@ -11,7 +11,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 import my.chatapplication.Constant.VALIDATION;
 import my.chatapplication.DataHolder.User;
@@ -83,9 +85,8 @@ public class UMSModule{
         Toast.makeText(context , s , Toast.LENGTH_LONG).show();
     }
 
-    public void saveUser(User user){
+    public void signUp(User user){
         Firebase usersave = myFirebaseRef.child("users").child(removeDot(user.getEmail()));
-        usersave.setValue(user);
 
         usersave.setValue(user, new Firebase.CompletionListener() {
 
@@ -95,11 +96,11 @@ public class UMSModule{
                 try {
                     message.arg1 = firebaseError.getCode();
                     message.obj = firebaseError.getMessage();
-                    loginHandler.sendMessage(message);
+                    message.obj = VALIDATION.TRY_AGAIN_LATER;
+                    handleMessage(message);
                 } catch (Exception e) {
-                    message.obj = 1;
-                    message.obj = firebase.getKey();
-                    loginHandler.sendMessage(message);
+                    message.obj = VALIDATION.ACCEPTED;
+                    handleMessage(message);
                 }
 
             }
@@ -120,18 +121,19 @@ public class UMSModule{
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Message message = loginHandler.obtainMessage();
-                message.arg1 = 1;
+                Message message = new Message();
                 message.obj = dataSnapshot.getValue();
-                loginHandler.sendMessage(message);
+                handleMessage(message);
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                Message message = loginHandler.obtainMessage();
-                message.arg1 = -1;
-                message.obj = firebaseError.getMessage();
-                loginHandler.sendMessage(message);
+                Message message = new Message();
+                message.obj = VALIDATION.TRY_AGAIN_LATER;
+                showToastMessage(Integer.toString(firebaseError.getCode()));
+                showToastMessage(firebaseError.getDetails());
+                showToastMessage(firebaseError.getMessage());
+                handleMessage(message);
             }
         });
     }

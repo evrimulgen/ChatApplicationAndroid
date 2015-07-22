@@ -28,7 +28,9 @@ public class NavigationBar extends MaterialNavigationDrawer {
             this.addSection(newSection("Chat", new Intent(this, ChatActivity.class)));
             this.addSection(newSection("Login", new Intent(this, Login.class)));
             this.addSection(newSection("SignUp", new Intent(this, SignUpEmailAndPassowrd.class)));
-            this.addSection(newSection("Profile", new Intent(this, UserProfile.class)));
+            Intent intent = new Intent(this, UserProfile.class);
+            intent.putExtra("email" , "ahmed@ahmed.com");
+            this.addSection(newSection("Profile", intent));
 
             //this.addBottomSection(newSection("Bottom Section",R.drawable.ic_settings_black_24dp,new Intent(this,Settings.class)));
 
