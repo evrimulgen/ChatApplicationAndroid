@@ -1,0 +1,10 @@
+package my.chatapplication.Constant;
+
+/**
+ * Created by nasser on 22/07/15.
+ */
+public enum  VALIDATION {
+    EMAIL_REQUIRED , PASSWORD_REQUIRED , REPASSWORD_REQUIRED ,
+    NOT_MATCH_PASSWORD , EMAIL_INVALID , PASSWORD_INVALID , EMAIL_ALREADY_EXIST,
+    ACCEPTED
+}

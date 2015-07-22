@@ -6,13 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
-import my.chatapplication.Navigation.NavBarDomain;
+import my.chatapplication.DataHolder.ChatItem;
 import my.chatapplication.R;
 
 /**
@@ -21,9 +20,9 @@ import my.chatapplication.R;
 public class ChatAdapter extends BaseAdapter{
     private Activity activity;
     private LayoutInflater inflater;
-    private List<ChatDomain> chats;
+    private List<ChatItem> chats;
 
-    public ChatAdapter(Activity activity , List<ChatDomain> chats){
+    public ChatAdapter(Activity activity , List<ChatItem> chats){
         this.activity = activity;
         this.chats = chats;
     }
@@ -45,7 +44,7 @@ public class ChatAdapter extends BaseAdapter{
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ChatDomain chat = chats.get(i);
+        ChatItem chat = chats.get(i);
 
         if(inflater == null)
             inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -1,4 +1,4 @@
-package my.chatapplication.Controller;
+package my.chatapplication.View;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -19,14 +19,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.firebase.client.FirebaseError;
-
 import my.chatapplication.Chat.ChatActivity;
-import my.chatapplication.Domain.User;
+import my.chatapplication.DataHolder.User;
 import my.chatapplication.Model.UMSModule;
 import my.chatapplication.R;
 
-public class SignUpUserInfoController extends ActionBarActivity {
+public class SignUpUserInfo extends ActionBarActivity {
     private User user;
     private EditText username;
     private EditText telephone;
@@ -44,10 +42,10 @@ public class SignUpUserInfoController extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_domain);
         context = this;
-        if(messageHandler != null)
-            UmsModule = new UMSModule(this , messageHandler);
-        else
-            showToastMessage("mesage hundler is null");
+//        if(messageHandler != null)
+//            UmsModule = new UMSModule(this , messageHandler);
+//        else
+//            showToastMessage("mesage hundler is null");
 
         connectWithXml();
         clickListnerInit();
@@ -63,37 +61,37 @@ public class SignUpUserInfoController extends ActionBarActivity {
     }
 
     private void initUserInfo() {
-        fillUserObject();
-        telephone.setError(null);
-        username.setError(null);
-
-        String name = username.getText().toString();
-        String telep = telephone.getText().toString();
-
-        boolean cancelLogin = false;
-        View focusView = null;
-
-        if (TextUtils.isEmpty(telep)) {
-            telephone.setError(getString(R.string.field_required));
-            focusView = telephone;
-            cancelLogin = true;
-        } else if (!isTelephoneValid(telep)) {
-            telephone.setError(getString(R.string.invalid_telephone_number));
-            focusView = telephone;
-            cancelLogin = true;
-        }
-        if (TextUtils.isEmpty(name)) {
-            username.setError(getString(R.string.field_required));
-            focusView = username;
-            cancelLogin = true;
-        }
-
-        if (cancelLogin) {
-            focusView.requestFocus();
-        } else {
-            showProgress(true);
-            UmsModule.saveUser(user);
-        }
+//        fillUserObject();
+//        telephone.setError(null);
+//        username.setError(null);
+//
+//        String name = username.getText().toString();
+//        String telep = telephone.getText().toString();
+//
+//        boolean cancelLogin = false;
+//        View focusView = null;
+//
+//        if (TextUtils.isEmpty(telep)) {
+//            telephone.setError(getString(R.string.field_required));
+//            focusView = telephone;
+//            cancelLogin = true;
+//        } else if (!isTelephoneValid(telep)) {
+//            telephone.setError(getString(R.string.invalid_telephone_number));
+//            focusView = telephone;
+//            cancelLogin = true;
+//        }
+//        if (TextUtils.isEmpty(name)) {
+//            username.setError(getString(R.string.field_required));
+//            focusView = username;
+//            cancelLogin = true;
+//        }
+//
+//        if (cancelLogin) {
+//            focusView.requestFocus();
+//        } else {
+//            showProgress(true);
+//            UmsModule.saveUser(user);
+//        }
     }
 
     private boolean isTelephoneValid(String telep) {

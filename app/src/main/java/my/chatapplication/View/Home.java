@@ -1,4 +1,4 @@
-package my.chatapplication.Controller;
+package my.chatapplication.View;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -10,7 +10,7 @@ import my.chatapplication.Navigation.NavigationBar;
 import my.chatapplication.R;
 
 
-public class HomeController extends ActionBarActivity {
+public class Home extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,41 +1,37 @@
 package my.chatapplication.Model;
 
+import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
-import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.security.MessageDigest;
-import java.util.HashMap;
 import java.util.Map;
 
-import my.chatapplication.Controller.LoginController;
-import my.chatapplication.Domain.User;
+import my.chatapplication.Constant.VALIDATION;
+import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
 
 /**
  * Created by nasser on 20/07/15.
  */
-public class UMSModule {
+public class UMSModule{
 
-    private Context context;
     private Firebase myFirebaseRef;
     private Handler loginHandler;
+    private Context context;
 
-    public UMSModule(Context context, Handler handler){
+    public UMSModule(Handler handler , Context context){
         this.context = context;
+        loginHandler = handler;
         Firebase.setAndroidContext(context);
         myFirebaseRef = new Firebase(context.getString(R.string.fireBaseUrl));
-        loginHandler = handler;
     }
 
     public void signUp(String email, String password){
@@ -63,20 +59,31 @@ public class UMSModule {
         myFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
-                Message message = loginHandler.obtainMessage();
-                message.arg1 = 1;
-                message.obj = authData;
-                loginHandler.sendMessage(message);
+                // showToastMessage("get Accepted from fire base");
+                Message message = new Message();
+                message.obj = VALIDATION.ACCEPTED;
+                handleMessage(message);
             }
 
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                Message message = loginHandler.obtainMessage();
-                message.arg1 = firebaseError.getCode();
-                message.obj = firebaseError.getMessage();
-                loginHandler.sendMessage(message);
+                Message message = new Message();
+                // showToastMessage("error with status code is " + firebaseError.getCode());
+                switch (firebaseError.getCode()) {
+                    case -16:
+                        message.obj = VALIDATION.PASSWORD_INVALID;
+                        break;
+                    case -17:
+                        message.obj = VALIDATION.EMAIL_INVALID;
+                        break;
+                }
+                handleMessage(message);
             }
         });
+    }
+
+    private void showToastMessage(String s) {
+        Toast.makeText(context , s , Toast.LENGTH_LONG).show();
     }
 
     public void saveUser(User user){
@@ -100,10 +107,6 @@ public class UMSModule {
 
             }
         });
-    }
-
-    private void showMessage(String message) {
-        Toast.makeText(context , message , Toast.LENGTH_LONG).show();
     }
 
     public void updateUser(User user){
@@ -134,6 +137,11 @@ public class UMSModule {
                 loginHandler.sendMessage(message);
             }
         });
+    }
+
+    public void handleMessage(Message msg){
+        // showToastMessage("message handler in UMSModule " + msg.obj );
+        loginHandler.handleMessage(msg);
     }
 
     public String removeDot(String msg){

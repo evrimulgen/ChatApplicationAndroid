@@ -1,34 +1,32 @@
-package my.chatapplication.Controller;
+package my.chatapplication.View;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Message;
-import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
-import android.os.Handler;
-
-import my.chatapplication.Model.UMSModule;
+import my.chatapplication.Chat.ChatActivity;
+import my.chatapplication.ChatView;
+import my.chatapplication.Constant.CLASSES;
+import my.chatapplication.Constant.VALIDATION;
+import my.chatapplication.Controller.UserController;
 import my.chatapplication.R;
 //http://javapapers.com/android/beautiful-android-login-screen-design-tutorial/
-public class LoginController extends ActionBarActivity{
+public class Login extends ActionBarActivity implements ChatView{
 
     private View loginFormView;
     private View progressView;
@@ -36,32 +34,15 @@ public class LoginController extends ActionBarActivity{
     private EditText passwordTextView;
     private Button loginButton;
 
-    private UMSModule UMSModule;
-    private Context context;
+    private UserController userController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-
+        userController = new UserController(this , CLASSES.LOGIN , this);
         connectWithXml();
         onClickListner();
-
-        if(messageHandler != null)
-            UMSModule = new UMSModule(this , messageHandler);
-        else
-            showToastMessage("mesage hundler is null");
-
-        context = this;
-    }
-
-
-    public void connectWithXml() {
-        emailTextView = (AutoCompleteTextView) findViewById(R.id.login_email);
-        passwordTextView = (EditText) findViewById(R.id.login_password);
-        loginButton = (Button) findViewById(R.id.login_button);
-        loginFormView = findViewById(R.id.login_form);
-        progressView = findViewById(R.id.login_progress);
     }
 
     public void onClickListner(){
@@ -69,7 +50,6 @@ public class LoginController extends ActionBarActivity{
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_NULL) {
-                    initLogin();
                     return true;
                 }
                 return false;
@@ -79,10 +59,23 @@ public class LoginController extends ActionBarActivity{
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                initLogin();
+                String email = emailTextView.getText().toString();
+                String password = passwordTextView.getText().toString();
+                showProgress(true);
+//                 showToastMessage("start loggin with email " + email + "and password " + password);
+                userController.login(email, password);
+
             }
         });
 
+    }
+
+    public void connectWithXml() {
+        emailTextView = (AutoCompleteTextView) findViewById(R.id.login_email);
+        passwordTextView = (EditText) findViewById(R.id.login_password);
+        loginButton = (Button) findViewById(R.id.login_button);
+        loginFormView = findViewById(R.id.login_form);
+        progressView = findViewById(R.id.login_progress);
     }
 
     @Override
@@ -105,55 +98,6 @@ public class LoginController extends ActionBarActivity{
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Validate Login form and authenticate.
-     */
-    public void initLogin() {
-
-        emailTextView.setError(null);
-        passwordTextView.setError(null);
-
-        String email = emailTextView.getText().toString();
-        String password = passwordTextView.getText().toString();
-
-        boolean cancelLogin = false;
-        View focusView = null;
-
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            passwordTextView.setError(getString(R.string.invalid_password));
-            focusView = passwordTextView;
-            cancelLogin = true;
-        }
-
-        if (TextUtils.isEmpty(email)) {
-            emailTextView.setError(getString(R.string.field_required));
-            focusView = emailTextView;
-            cancelLogin = true;
-        } else if (!isEmailValid(email)) {
-            emailTextView.setError(getString(R.string.invalid_email));
-            focusView = emailTextView;
-            cancelLogin = true;
-        }
-
-        if (cancelLogin) {
-            // error in login
-            focusView.requestFocus();
-        } else {
-            showProgress(true);
-            UMSModule.login(email, password);
-        }
-    }
-
-    private boolean isEmailValid(String email) {
-        //add your own logic
-        return email.contains("@") && email.contains(".");
-    }
-
-    private boolean isPasswordValid(String password) {
-        //add your own logic
-        return password.length() > 4;
     }
 
     /**
@@ -193,53 +137,49 @@ public class LoginController extends ActionBarActivity{
         }
     }
 
-    /**
-     * @param emailAddressCollection sned list of string to autocomplete
-     */
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginController.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        emailTextView.setAdapter(adapter);
-    }
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
     public void showToastMessage(String msg){
-        Toast.makeText(context , msg , Toast.LENGTH_LONG).show();
+        Toast.makeText(this , msg , Toast.LENGTH_LONG).show();
     }
 
-    private Handler messageHandler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+        // showToastMessage("get to login activity with status is " + msg.obj);
+        VALIDATION status = (VALIDATION) msg.obj;
+        emailTextView.setError(null);
+        passwordTextView.setError(null);
 
-        @Override
-        public void handleMessage(Message msg){
-            View focusView = null;
+        String email = emailTextView.getText().toString();
+        String password = passwordTextView.getText().toString();
 
-            if(msg.arg1 == -16){
+        boolean cancelLogin = false;
+
+        View focusView = null;
+
+        showProgress(false);
+
+        switch (status){
+            case PASSWORD_REQUIRED:
+                passwordTextView.setError(getString(R.string.password_required));
+                focusView = passwordTextView;
+                break;
+            case PASSWORD_INVALID:
                 passwordTextView.setError(getString(R.string.password_is_incorrect));
                 focusView = passwordTextView;
-                focusView.requestFocus();
-            }else if (msg.arg1 == -17){
-                emailTextView.setError(getString(R.string.user_not_exist));
+                break;
+            case EMAIL_REQUIRED:
+                emailTextView.setError(getString(R.string.email_required));
                 focusView = emailTextView;
-                focusView.requestFocus();
-            } else{
-                showToastMessage("welcome");
-            }
-            showProgress(false);
+                break;
+            case EMAIL_INVALID:
+                emailTextView.setError(getString(R.string.email_invalid));
+                focusView = emailTextView;
+                break;
+            case ACCEPTED:
+                Intent intent = new Intent(this, ChatActivity.class);
+                startActivity(intent);
+                return ;
         }
-
-    };
-
+        focusView.requestFocus();
+    }
 
 }

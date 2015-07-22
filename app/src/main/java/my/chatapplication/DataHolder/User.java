@@ -1,4 +1,4 @@
-package my.chatapplication.Domain;
+package my.chatapplication.DataHolder;
 
 import java.util.HashMap;
 import java.util.Map;

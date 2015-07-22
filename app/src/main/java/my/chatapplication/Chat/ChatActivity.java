@@ -1,12 +1,10 @@
 package my.chatapplication.Chat;
 
-import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -15,12 +13,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import my.chatapplication.DataHolder.ChatItem;
 import my.chatapplication.R;
 
 
 public class ChatActivity extends ActionBarActivity {
     private ListView list;
-    private List<ChatDomain> listArray;
+    private List<ChatItem> listArray;
     private ChatAdapter chatAdapter;
 
     private EditText editText;
@@ -56,7 +55,7 @@ public class ChatActivity extends ActionBarActivity {
 
     public void intListAdapter(){
         list = (ListView) findViewById(R.id.list);
-        listArray = new ArrayList<ChatDomain>();
+        listArray = new ArrayList<ChatItem>();
         chatAdapter = new ChatAdapter(this  , listArray);
         addToList("hello sherif");
         addToList("hello ahmed");
@@ -72,7 +71,7 @@ public class ChatActivity extends ActionBarActivity {
 
 
     public void addToList(String msg){
-            listArray.add(new ChatDomain(msg , "ahmed" , 0));
+            listArray.add(new ChatItem(msg , "ahmed" , 0));
     }
 
     @Override

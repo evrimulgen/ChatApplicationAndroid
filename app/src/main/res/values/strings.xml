@@ -21,13 +21,15 @@
     <string name="prompt_password">enter your password</string>
     <string name="prompt_repassword">repeat your password</string>
 
-    <string name="field_required">This field is required</string>
+    <string name="email_required">email field is required</string>
+    <string name="password_required">password field is required</string>
+    <string name="repassword_required">repassword field is required</string>
 
     <string name="invalid_password">Password is too short</string>
     <string name="invalid_repassword">repassword doesn\'t match password</string>
     <string name="password_is_incorrect">check your password</string>
 
-    <string name="invalid_email">This email address is invalid</string>
+    <string name="email_invalid">This email address is invalid</string>
     <string name="user_not_exist">user email doesn\'t exist</string>
     <string name="email_alreay_exist">email already exist</string>
     <string name="prompt_username">enter your name</string>

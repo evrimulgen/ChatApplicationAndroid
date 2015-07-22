@@ -1,7 +1,6 @@
-package my.chatapplication.Controller;
+package my.chatapplication.View;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
@@ -10,11 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import my.chatapplication.Chat.ChatActivity;
 import my.chatapplication.Model.UMSModule;
 import my.chatapplication.R;
 
-public class UserProfileController extends ActionBarActivity {
+public class UserProfile extends ActionBarActivity {
     private UMSModule umsModule;
     private Context context;
 
@@ -23,17 +21,17 @@ public class UserProfileController extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        context = this;
-        if(messageHandler != null)
-            umsModule = new UMSModule(this , messageHandler);
-        else
-            showToastMessage("mesage hundler is null");
-
-        try {
-            umsModule.getUser("ahmed@ahmed.com");
-        }catch (Exception e) {
-            showToastMessage(e.toString());
-        }
+//        context = this;
+//        if(messageHandler != null)
+//            umsModule = new UMSModule(this , messageHandler);
+//        else
+//            showToastMessage("mesage hundler is null");
+//
+//        try {
+//            umsModule.getUser("ahmed@ahmed.com");
+//        }catch (Exception e) {
+//            showToastMessage(e.toString());
+//        }
     }
 
     private void showToastMessage(String s) {

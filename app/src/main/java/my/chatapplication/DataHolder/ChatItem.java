@@ -1,14 +1,14 @@
-package my.chatapplication.Chat;
+package my.chatapplication.DataHolder;
 
 /**
  * Created by nasser on 16/07/15.
  */
-public class ChatDomain {
+public class ChatItem {
     String author;
     String msg;
     int img;
 
-    public ChatDomain(String msg, String author , int image) {
+    public ChatItem(String msg, String author, int image) {
         this.author = author;
         this.msg = msg;
         this.img = image;

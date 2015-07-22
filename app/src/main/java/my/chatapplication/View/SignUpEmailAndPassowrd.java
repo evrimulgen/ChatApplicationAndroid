@@ -1,4 +1,4 @@
-package my.chatapplication.Controller;
+package my.chatapplication.View;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -23,11 +23,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import my.chatapplication.Domain.User;
+import my.chatapplication.ChatView;
+import my.chatapplication.DataHolder.User;
 import my.chatapplication.Model.UMSModule;
 import my.chatapplication.R;
 
-public class SignUpEmailAndPassowrdController extends ActionBarActivity {
+public class SignUpEmailAndPassowrd extends ActionBarActivity implements ChatView{
     private View signUpFormView;
     private View progressView;
     private AutoCompleteTextView emailTextView;
@@ -45,11 +46,11 @@ public class SignUpEmailAndPassowrdController extends ActionBarActivity {
 
         connectWithXml();
         onClickListner();
-
-        if(messageHandler != null)
-            UMSModule = new UMSModule(this , messageHandler);
-        else
-            showToastMessage("mesage hundler is null");
+//
+//        if(messageHandler != null)
+//            UMSModule = new UMSModule(this , messageHandler);
+//        else
+//            showToastMessage("mesage hundler is null");
 
         context = this;
     }
@@ -121,50 +122,50 @@ public class SignUpEmailAndPassowrdController extends ActionBarActivity {
         boolean cancelLogin = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(email)) {
-            emailTextView.setError(getString(R.string.field_required));
-            focusView = emailTextView;
-            cancelLogin = true;
-        } else if (!isEmailValid(email)) {
-            emailTextView.setError(getString(R.string.invalid_email));
-            focusView = emailTextView;
-            cancelLogin = true;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            passwordTextView.setError(getString(R.string.field_required));
-            focusView = passwordTextView;
-            cancelLogin = true;
-        }else if (!isPasswordValid(password)){
-            passwordTextView.setError(getString(R.string.field_required));
-            focusView = passwordTextView;
-            cancelLogin = true;
-        }
-
-        if (TextUtils.isEmpty(repasword)) {
-            repasswordTextView.setError(getString(R.string.field_required));
-            focusView = repasswordTextView;
-            cancelLogin = true;
-        } else if (!isPasswordValid(repasword)) {
-            repasswordTextView.setError(getString(R.string.invalid_password));
-            focusView = repasswordTextView;
-            cancelLogin = true;
-        }
-
-        if(!cancelLogin && !comparePassword(password , repasword)){
-            repasswordTextView.setError(getString(R.string.invalid_repassword));
-            focusView = repasswordTextView;
-            cancelLogin = true;
-        }
-
-
-        if (cancelLogin) {
-            // error in login
-            focusView.requestFocus();
-        } else {
-            showProgress(true);
-            UMSModule.signUp(email, password);
-        }
+//        if (TextUtils.isEmpty(email)) {
+//            emailTextView.setError(getString(R.string.field_required));
+//            focusView = emailTextView;
+//            cancelLogin = true;
+//        } else if (!isEmailValid(email)) {
+//            emailTextView.setError(getString(R.string.invalid_email));
+//            focusView = emailTextView;
+//            cancelLogin = true;
+//        }
+//
+//        if (TextUtils.isEmpty(password)) {
+//            passwordTextView.setError(getString(R.string.field_required));
+//            focusView = passwordTextView;
+//            cancelLogin = true;
+//        }else if (!isPasswordValid(password)){
+//            passwordTextView.setError(getString(R.string.field_required));
+//            focusView = passwordTextView;
+//            cancelLogin = true;
+//        }
+//
+//        if (TextUtils.isEmpty(repasword)) {
+//            repasswordTextView.setError(getString(R.string.field_required));
+//            focusView = repasswordTextView;
+//            cancelLogin = true;
+//        } else if (!isPasswordValid(repasword)) {
+//            repasswordTextView.setError(getString(R.string.invalid_password));
+//            focusView = repasswordTextView;
+//            cancelLogin = true;
+//        }
+//
+//        if(!cancelLogin && !comparePassword(password , repasword)){
+//            repasswordTextView.setError(getString(R.string.invalid_repassword));
+//            focusView = repasswordTextView;
+//            cancelLogin = true;
+//        }
+//
+//
+//        if (cancelLogin) {
+//            // error in login
+//            focusView.requestFocus();
+//        } else {
+//            showProgress(true);
+//            UMSModule.signUp(email, password);
+//        }
     }
 
     private boolean isEmailValid(String email) {
@@ -218,6 +219,11 @@ public class SignUpEmailAndPassowrdController extends ActionBarActivity {
         }
     }
 
+    @Override
+    public void handleMessage(Message msg) {
+
+    }
+
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -243,7 +249,7 @@ public class SignUpEmailAndPassowrdController extends ActionBarActivity {
                 focusView = emailTextView;
                 focusView.requestFocus();
             }else if (msg.arg1 == 1){
-                Intent intent = new Intent(context , SignUpUserInfoController.class);
+                Intent intent = new Intent(context , SignUpUserInfo.class);
                 intent.putExtra(User.EMAIL, emailTextView.getText().toString());
                 intent.putExtra(User.PASSWORD , passwordTextView.getText().toString());
                 context.startActivity(intent);
