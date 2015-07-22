@@ -3,15 +3,12 @@ package my.chatapplication.View;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,12 +20,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import my.chatapplication.ChatView;
+import my.chatapplication.Constant.CLASSES;
+import my.chatapplication.Constant.VALIDATION;
+import my.chatapplication.Controller.UserController;
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.Model.UMSModule;
 import my.chatapplication.R;
 
-public class SignUpEmailAndPassowrd extends ActionBarActivity implements ChatView{
+public class SignUpEmailAndPassowrd extends ActionBarActivity implements ChatView {
     private View signUpFormView;
     private View progressView;
     private AutoCompleteTextView emailTextView;
@@ -36,23 +35,15 @@ public class SignUpEmailAndPassowrd extends ActionBarActivity implements ChatVie
     private EditText repasswordTextView;
     private Button signUpButton;
 
-    private UMSModule UMSModule;
-    private Context context;
+    private UserController userController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        userController = new UserController(this, CLASSES.SIGNUP_EMAIL_PASSWORD, this);
         connectWithXml();
         onClickListner();
-//
-//        if(messageHandler != null)
-//            UMSModule = new UMSModule(this , messageHandler);
-//        else
-//            showToastMessage("mesage hundler is null");
-
-        context = this;
     }
 
     public void connectWithXml() {
@@ -64,7 +55,7 @@ public class SignUpEmailAndPassowrd extends ActionBarActivity implements ChatVie
         progressView = findViewById(R.id.signUp_progress);
     }
 
-    public void onClickListner(){
+    public void onClickListner() {
         passwordTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -112,60 +103,13 @@ public class SignUpEmailAndPassowrd extends ActionBarActivity implements ChatVie
      */
     public void initSignUp() {
 
-        emailTextView.setError(null);
-        passwordTextView.setError(null);
+        showProgress(true);
 
         String email = emailTextView.getText().toString();
         String password = passwordTextView.getText().toString();
         String repasword = repasswordTextView.getText().toString();
 
-        boolean cancelLogin = false;
-        View focusView = null;
-
-//        if (TextUtils.isEmpty(email)) {
-//            emailTextView.setError(getString(R.string.field_required));
-//            focusView = emailTextView;
-//            cancelLogin = true;
-//        } else if (!isEmailValid(email)) {
-//            emailTextView.setError(getString(R.string.invalid_email));
-//            focusView = emailTextView;
-//            cancelLogin = true;
-//        }
-//
-//        if (TextUtils.isEmpty(password)) {
-//            passwordTextView.setError(getString(R.string.field_required));
-//            focusView = passwordTextView;
-//            cancelLogin = true;
-//        }else if (!isPasswordValid(password)){
-//            passwordTextView.setError(getString(R.string.field_required));
-//            focusView = passwordTextView;
-//            cancelLogin = true;
-//        }
-//
-//        if (TextUtils.isEmpty(repasword)) {
-//            repasswordTextView.setError(getString(R.string.field_required));
-//            focusView = repasswordTextView;
-//            cancelLogin = true;
-//        } else if (!isPasswordValid(repasword)) {
-//            repasswordTextView.setError(getString(R.string.invalid_password));
-//            focusView = repasswordTextView;
-//            cancelLogin = true;
-//        }
-//
-//        if(!cancelLogin && !comparePassword(password , repasword)){
-//            repasswordTextView.setError(getString(R.string.invalid_repassword));
-//            focusView = repasswordTextView;
-//            cancelLogin = true;
-//        }
-//
-//
-//        if (cancelLogin) {
-//            // error in login
-//            focusView.requestFocus();
-//        } else {
-//            showProgress(true);
-//            UMSModule.signUp(email, password);
-//        }
+        userController.signUp(email, password, repasword);
     }
 
     private boolean isEmailValid(String email) {
@@ -178,12 +122,13 @@ public class SignUpEmailAndPassowrd extends ActionBarActivity implements ChatVie
         return password.length() > 4;
     }
 
-    private boolean comparePassword(String password , String repassword) {
+    private boolean comparePassword(String password, String repassword) {
         return password.equals(repassword);
     }
 
     /**
      * Shows the progress UI and hides the login form.
+     *
      * @param show is boolean to show progress or no
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
@@ -221,7 +166,44 @@ public class SignUpEmailAndPassowrd extends ActionBarActivity implements ChatVie
 
     @Override
     public void handleMessage(Message msg) {
-
+        showProgress(false);
+        View focusView = null;
+        switch (((VALIDATION) msg.obj)) {
+            case ACCEPTED:
+                Intent intent = new Intent(this, SignUpUserInfo.class);
+                intent.putExtra(User.EMAIL, emailTextView.getText().toString());
+                intent.putExtra(User.PASSWORD, passwordTextView.getText().toString());
+                startActivity(intent);
+                return;
+            case REPASSWORD_REQUIRED:
+                repasswordTextView.setError(getString(R.string.repassword_required));
+                focusView = repasswordTextView;
+                break;
+            case PASSWORD_REQUIRED:
+                passwordTextView.setError(getString(R.string.password_required));
+                focusView = passwordTextView;
+                break;
+            case NOT_MATCH_PASSWORD:
+                repasswordTextView.setError(getString(R.string.repassword_doesnot_match));
+                focusView = repasswordTextView;
+                break;
+            case PASSWORD_INVALID:
+                passwordTextView.setError(getString(R.string.password_is_incorrect));
+                focusView = passwordTextView;
+                break;
+            case EMAIL_REQUIRED:
+                emailTextView.setError(getString(R.string.email_required));
+                focusView = emailTextView;
+                break;
+            case EMAIL_INVALID:
+                emailTextView.setError(getString(R.string.email_invalid));
+                focusView = emailTextView;
+                break;
+            default:
+                emailTextView.setError(getString(R.string.email_alreay_exist));
+                focusView = emailTextView;
+        }
+        focusView.requestFocus();
     }
 
     private interface ProfileQuery {
@@ -234,28 +216,9 @@ public class SignUpEmailAndPassowrd extends ActionBarActivity implements ChatVie
         int IS_PRIMARY = 1;
     }
 
-    public void showToastMessage(String msg){
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+    public void showToastMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
-
-    private Handler messageHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg){
-            showProgress(false);
-            if(msg.arg1 == -18){
-                View focusView = null;
-                emailTextView.setError(getString(R.string.email_alreay_exist));
-                focusView = emailTextView;
-                focusView.requestFocus();
-            }else if (msg.arg1 == 1){
-                Intent intent = new Intent(context , SignUpUserInfo.class);
-                intent.putExtra(User.EMAIL, emailTextView.getText().toString());
-                intent.putExtra(User.PASSWORD , passwordTextView.getText().toString());
-                context.startActivity(intent);
-            }
-        }
-    };
 
 
 }

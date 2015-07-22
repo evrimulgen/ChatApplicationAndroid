@@ -1,6 +1,5 @@
 package my.chatapplication.Model;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -38,18 +37,16 @@ public class UMSModule{
         myFirebaseRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
-                Message message = loginHandler.obtainMessage();
-                message.arg1 = 1;
-                message.obj = result;
-                loginHandler.sendMessage(message);
+                Message message = new Message();
+                message.obj = VALIDATION.ACCEPTED;
+                handleMessage(message);
             }
 
             @Override
             public void onError(FirebaseError firebaseError) {
-                Message message = loginHandler.obtainMessage();
-                message.arg1 = firebaseError.getCode();
-                message.obj = firebaseError.getMessage();
-                loginHandler.sendMessage(message);
+                Message message = new Message();
+                message.obj = VALIDATION.EMAIL_ALREADY_EXIST;
+                handleMessage(message);
             }
         });
     }

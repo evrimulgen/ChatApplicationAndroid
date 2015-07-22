@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import my.chatapplication.Chat.ChatActivity;
-import my.chatapplication.ChatView;
 import my.chatapplication.Constant.CLASSES;
 import my.chatapplication.Constant.VALIDATION;
 import my.chatapplication.Controller.UserController;
