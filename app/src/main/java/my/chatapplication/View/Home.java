@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.firebase.client.Firebase;
+
+import my.chatapplication.Chat.ChatService;
 import my.chatapplication.Navigation.NavigationBar;
 import my.chatapplication.R;
 
@@ -14,10 +17,13 @@ public class Home extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Firebase.setAndroidContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this , NavigationBar.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this , NavigationBar.class);
+//        startActivity(intent);
+        Intent intent = new Intent(this, ChatService.class);
+        startService(intent);
     }
 
     @Override

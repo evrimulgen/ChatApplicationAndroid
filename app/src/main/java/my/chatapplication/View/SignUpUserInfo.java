@@ -69,7 +69,7 @@ public class SignUpUserInfo extends ActionBarActivity implements ChatView{
         String password = getIntent().getExtras().getString(User.PASSWORD);
         String telep = telephoneTextEdit.getText().toString();
         String name = nameTextEdit.getText().toString();
-
+        
         return new User(email , password , telep , name);
     }
 
