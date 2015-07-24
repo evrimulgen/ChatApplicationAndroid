@@ -1,10 +1,6 @@
-package my.chatapplication.Chat.FireBaseService;
+package my.chatapplication.Adapter;
 
 import android.app.Activity;
-import android.app.Service;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

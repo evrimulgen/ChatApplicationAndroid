@@ -1,4 +1,4 @@
-package my.chatapplication.Chat.FireBaseService;
+package my.chatapplication.Adapter;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.firebase.client.Query;
 
+import my.chatapplication.DataHolder.Chat;
 import my.chatapplication.R;
 
 /**

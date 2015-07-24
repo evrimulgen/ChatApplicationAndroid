@@ -1,4 +1,4 @@
-package my.chatapplication.Chat;
+package my.chatapplication.Service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -14,12 +14,14 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import my.chatapplication.DataHolder.Chat;
 import my.chatapplication.R;
 
 /**
  * Created by nasser on 23/07/15.
  */
 public class ChatService extends Service {
+
     private ChildEventListener mListener;
     private Firebase firebase = new Firebase("https://sngvsimplechatapp.firebaseio.com/Message");
     private Intent intent;

@@ -15,9 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import my.chatapplication.Chat.FireBaseService.ChatActivity;
-import my.chatapplication.Constant.CLASSES;
-import my.chatapplication.Constant.VALIDATION;
+import my.chatapplication.DataHolder.CLASSES;
+import my.chatapplication.DataHolder.VALIDATION;
 import my.chatapplication.Controller.UserController;
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;

@@ -1,4 +1,4 @@
-package my.chatapplication.Constant;
+package my.chatapplication.DataHolder;
 
 /**
  * Created by nasser on 22/07/15.

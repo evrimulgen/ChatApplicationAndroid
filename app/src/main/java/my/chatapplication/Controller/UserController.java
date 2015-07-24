@@ -8,8 +8,8 @@ import android.widget.Toast;
 
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.View.ChatView;
-import my.chatapplication.Constant.CLASSES;
-import my.chatapplication.Constant.VALIDATION;
+import my.chatapplication.DataHolder.CLASSES;
+import my.chatapplication.DataHolder.VALIDATION;
 import my.chatapplication.Model.UMSModule;
 import my.chatapplication.View.Login;
 import my.chatapplication.View.SignUpEmailAndPassowrd;

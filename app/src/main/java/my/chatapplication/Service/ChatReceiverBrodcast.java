@@ -1,4 +1,4 @@
-package my.chatapplication.Chat.FireBaseService;
+package my.chatapplication.Service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -15,7 +15,7 @@ import my.chatapplication.R;
 /**
  * Created by glenns on 09/08/13.
  */
-public class PowerBroadcastReceiver extends BroadcastReceiver {
+public class ChatReceiverBrodcast extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context ctx, Intent intent){

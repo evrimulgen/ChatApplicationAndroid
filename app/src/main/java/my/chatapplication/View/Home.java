@@ -8,7 +8,7 @@ import android.view.MenuItem;
 
 import com.firebase.client.Firebase;
 
-import my.chatapplication.Chat.ChatService;
+import my.chatapplication.Service.ChatService;
 import my.chatapplication.Navigation.NavigationBar;
 import my.chatapplication.R;
 

@@ -1,4 +1,4 @@
-package my.chatapplication.Chat.FireBaseService;
+package my.chatapplication.DataHolder;
 
 import android.media.Image;
 
@@ -12,10 +12,10 @@ public class Chat {
     private String author;
 
     // Required default constructor for Firebase object mapping
-    private Chat() {
+    public  Chat() {
     }
 
-    Chat(String message, String author) {
+    public Chat(String message, String author) {
         this.message = message;
         this.author = author;
     }

@@ -11,11 +11,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
-import my.chatapplication.Constant.VALIDATION;
+import my.chatapplication.DataHolder.VALIDATION;
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
 

@@ -1,4 +1,4 @@
-package my.chatapplication.Chat.FireBaseService;
+package my.chatapplication.View;
 
 import android.app.ListActivity;
 import android.content.Intent;
@@ -17,7 +17,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import my.chatapplication.Chat.ChatService;
+import my.chatapplication.DataHolder.Chat;
+import my.chatapplication.Adapter.ChatListAdapter;
+import my.chatapplication.Service.ChatService;
 import my.chatapplication.R;
 
 public class ChatActivity extends ListActivity {

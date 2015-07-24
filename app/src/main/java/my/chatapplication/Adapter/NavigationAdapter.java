@@ -1,4 +1,4 @@
-package my.chatapplication.Navigation;
+package my.chatapplication.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import my.chatapplication.Navigation.NavBarDomain;
 import my.chatapplication.R;
 
 /**

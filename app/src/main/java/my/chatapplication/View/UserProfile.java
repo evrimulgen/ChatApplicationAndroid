@@ -1,7 +1,5 @@
 package my.chatapplication.View;
 
-import android.content.Context;
-import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,9 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import my.chatapplication.Constant.CLASSES;
+import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.Controller.UserController;
-import my.chatapplication.Model.UMSModule;
 import my.chatapplication.R;
 
 public class UserProfile extends ActionBarActivity implements ChatView{
