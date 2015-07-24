@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import my.chatapplication.Chat.ChatActivity;
+import my.chatapplication.Chat.FireBaseService.ChatActivity;
 import my.chatapplication.View.Login;
 import my.chatapplication.View.SignUpEmailAndPassowrd;
 import my.chatapplication.View.UserProfile;

@@ -12,18 +12,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_launcher"
-        android:id="@+id/msg_image"/>
+        android:id="@+id/chat_profilePicture"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/msg_author"
+            android:id="@+id/chat_author"
             android:text="author"/>
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Hello_MSG"
-        android:id="@+id/msg_text"
+        android:id="@+id/chat_message"
         android:textSize="17sp"
         android:padding="10dp"/>
 </LinearLayout>

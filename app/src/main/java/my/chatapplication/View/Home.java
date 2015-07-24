@@ -20,10 +20,10 @@ public class Home extends ActionBarActivity {
         Firebase.setAndroidContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        Intent intent = new Intent(this , NavigationBar.class);
-//        startActivity(intent);
-        Intent intent = new Intent(this, ChatService.class);
-        startService(intent);
+        Intent intent = new Intent(this , NavigationBar.class);
+        startActivity(intent);
+        Intent intent2 = new Intent(this, ChatService.class);
+        startService(intent2);
     }
 
     @Override
