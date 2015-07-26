@@ -8,7 +8,6 @@ import android.view.MenuItem;
 
 import com.firebase.client.Firebase;
 
-import my.chatapplication.Service.ChatService;
 import my.chatapplication.Navigation.NavigationBar;
 import my.chatapplication.R;
 
@@ -22,8 +21,6 @@ public class Home extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this , NavigationBar.class);
         startActivity(intent);
-        Intent intent2 = new Intent(this, ChatService.class);
-        startService(intent2);
     }
 
     @Override

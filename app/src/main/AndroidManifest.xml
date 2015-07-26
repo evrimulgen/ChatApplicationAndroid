@@ -48,10 +48,12 @@
             android:name=".View.UserProfile"
             android:label="@string/title_activity_user_profile" >
         </activity>
-        <service
-            android:name=".Service.ChatService"
-            android:label="Chat Service"
-            />
+        <!--<service-->
+            <!--android:name=".Service.ChatServiceTmpV2"-->
+            <!--android:label="Chat Service"-->
+            <!--/>-->
+        <service android:name=".Service.ChatService"
+            android:label="Chat Service"/>
     </application>
 
 </manifest>

@@ -62,8 +62,6 @@ public class ChatActivity extends ListActivity {
             }
         });
 
-        intent = new Intent(this, ChatService.class);
-        startService(intent);
 
     }
 
@@ -103,10 +101,21 @@ public class ChatActivity extends ListActivity {
     }
 
     @Override
+    protected void onResume() {
+        intent = new Intent(this, ChatService.class);
+        stopService(intent);
+        super.onResume();
+    }
+
+    @Override
     public void onStop() {
-        super.onStop();
         mFirebaseRef.getRoot().child(".info/connected").removeEventListener(mConnectedListener);
         mChatListAdapter.cleanup();
+        showToastMessage("start service");
+        System.out.println("ChatService :: Start");
+        intent = new Intent(this, ChatService.class);
+        startService(intent);
+        super.onStop();
     }
 
     private void sendMessage() {
@@ -119,5 +128,11 @@ public class ChatActivity extends ListActivity {
             mFirebaseRef.push().setValue(chat);
             inputText.setText("");
         }
+    }
+
+
+
+    private void showToastMessage(String s) {
+        Toast.makeText(this , s , Toast.LENGTH_LONG).show();
     }
 }
