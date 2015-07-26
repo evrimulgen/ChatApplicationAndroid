@@ -158,6 +158,7 @@ public class SignUpUserInfo extends ActionBarActivity implements ChatView{
                 break;
             case ACCEPTED:
                 Intent intent = new Intent(this , ChatActivity.class);
+                intent.putExtra("user" , user);
                 startActivity(intent);
                 return ;
             case TELEPHONE_NUMBER_REQUIRED:

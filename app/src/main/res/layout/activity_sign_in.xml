@@ -106,7 +106,7 @@ tools:context="my.chatapplication.View.Login">
         android:layout_height="wrap_content"
         android:text="Sign up"
         android:background="@color/chatWindowBackground"
-        android:id="@+id/signUpTextView"
+        android:id="@+id/login_signup_button"
         android:autoLink="web"
         android:textColor="#000" />
 </LinearLayout>

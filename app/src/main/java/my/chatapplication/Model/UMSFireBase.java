@@ -13,6 +13,7 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.Map;
 
+import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.DataHolder.VALIDATION;
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
@@ -20,13 +21,13 @@ import my.chatapplication.R;
 /**
  * Created by nasser on 20/07/15.
  */
-public class UMSModule{
+public class UMSFireBase {
 
     private Firebase myFirebaseRef;
     private Handler loginHandler;
     private Context context;
 
-    public UMSModule(Handler handler , Context context){
+    public UMSFireBase(Handler handler, Context context){
         this.context = context;
         loginHandler = handler;
         Firebase.setAndroidContext(context);
@@ -111,7 +112,7 @@ public class UMSModule{
         userUpdate.updateChildren(userdata);
     }
 
-    public void getUser(String email){
+    public void getUserByEmail(String email){
 
         Firebase _user = myFirebaseRef.child("users").child(removeDot(email));
 
@@ -121,12 +122,14 @@ public class UMSModule{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Message message = new Message();
                 message.obj = dataSnapshot.getValue();
+                message.arg1 = 1;
                 handleMessage(message);
             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Message message = new Message();
+                message.arg1 = -1;
                 message.obj = VALIDATION.TRY_AGAIN_LATER;
                 showToastMessage(Integer.toString(firebaseError.getCode()));
                 showToastMessage(firebaseError.getDetails());
@@ -137,7 +140,7 @@ public class UMSModule{
     }
 
     public void handleMessage(Message msg){
-        // showToastMessage("message handler in UMSModule " + msg.obj );
+        // showToastMessage("message handler in UMSFireBase " + msg.obj );
         loginHandler.handleMessage(msg);
     }
 

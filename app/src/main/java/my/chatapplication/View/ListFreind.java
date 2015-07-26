@@ -7,29 +7,39 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.Controller.UserController;
+import my.chatapplication.DataHolder.CLASSES;
+import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
 
-public class UserProfile extends ActionBarActivity implements ChatView{
+public class ListFreind extends ActionBarActivity implements ChatView{
+
     private UserController userController;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
-        userController = new UserController(this , CLASSES.USER_PROFILE , this);
-        userController.getUserByEmail(getIntent().getExtras().getString("email"));
+        setContentView(R.layout.activity_list_freind);
+        userController = new UserController(this , CLASSES.LIST_FREIND , this);
+        user = (User) getIntent().getExtras().getSerializable("user");
     }
 
-    private void showToastMessage(String s) {
-        Toast.makeText(this , s , Toast.LENGTH_LONG).show();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userController.saveUser(user);
+        showToastMessage(user.toString());
+    }
+
+    private void showToastMessage(String msg) {
+        Toast.makeText(this , msg , Toast.LENGTH_LONG).show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_user_profile, menu);
+        getMenuInflater().inflate(R.menu.menu_list_freind, menu);
         return true;
     }
 
@@ -50,6 +60,5 @@ public class UserProfile extends ActionBarActivity implements ChatView{
 
     @Override
     public void handleMessage(Message msg) {
-        showToastMessage(msg.obj.toString());
     }
 }

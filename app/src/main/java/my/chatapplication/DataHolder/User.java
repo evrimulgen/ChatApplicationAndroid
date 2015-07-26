@@ -1,12 +1,13 @@
 package my.chatapplication.DataHolder;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by nasser on 21/07/15.
  */
-public class User {
+public class User implements Serializable{
     public static String EMAIL = "EMAIL";
     public static String PASSWORD = "PASSWORD";
     public static String TELEPHONE = "TELEPHONE";
@@ -17,7 +18,6 @@ public class User {
     private String password;
     private String telephone;
     private String name;
-    private Object data;
 
     public String getEmail() {
         return email;
@@ -58,6 +58,13 @@ public class User {
         this.name = name;
     }
 
+    public User(String email){
+        password = "";
+        telephone = "";
+        name = "";
+        this.email = email;
+    }
+
     public User() {
     }
 
@@ -81,6 +88,9 @@ public class User {
     }
 
     public void setData(Object data) {
-        this.data = data;
+        Map<String,String> user = (Map<String, String>) data;
+        setTelephone(user.get("telephone"));
+        setPassword(user.get("password"));
+        setName(user.get("name"));
     }
 }

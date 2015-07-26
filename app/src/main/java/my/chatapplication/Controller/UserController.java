@@ -7,10 +7,13 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import my.chatapplication.DataHolder.User;
+import my.chatapplication.Model.UMSFireBase;
+import my.chatapplication.Model.UMSQLController;
 import my.chatapplication.View.ChatView;
 import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.DataHolder.VALIDATION;
-import my.chatapplication.Model.UMSModule;
+import my.chatapplication.View.Home;
+import my.chatapplication.View.ListFreind;
 import my.chatapplication.View.Login;
 import my.chatapplication.View.SignUpEmailAndPassowrd;
 import my.chatapplication.View.SignUpUserInfo;
@@ -22,8 +25,9 @@ import my.chatapplication.View.UserProfile;
 public class UserController extends Handler {
 
     private ChatView classView;
-    private UMSModule uModule;
+    private UMSFireBase uModule;
     private Context context;
+    private UMSQLController dbControler;
 
     public UserController(ChatView classView , CLASSES classes , Context context) {
         this.context = context;
@@ -40,8 +44,14 @@ public class UserController extends Handler {
             case USER_PROFILE:
                 this.classView = ((UserProfile)classView);
                 break;
+            case HOME:
+                this.classView = ((Home)classView);
+                break;
+            case LIST_FREIND:
+                this.classView = ((ListFreind)classView);
         }
-        uModule = new UMSModule(this , context);
+        uModule = new UMSFireBase(this , context);
+        dbControler = new UMSQLController(context);
     }
 
     private VALIDATION authentication(String email , String password , String repassword){
@@ -91,7 +101,7 @@ public class UserController extends Handler {
         switch (status){
             case ACCEPTED:
                 // showToastMessage("Accepted state in UserControll and start login");
-                uModule.login(email , password);
+                uModule.login(email, password);
                 break;
             default:
                 // showToastMessage("false and handle message");
@@ -148,13 +158,31 @@ public class UserController extends Handler {
         }
 
         uModule.signUp(user);
+        try{
+            dbControler.insertUser(user);
+        }catch (Exception e){
+            Toast.makeText(context , e.toString() , Toast.LENGTH_LONG).show();
+        }
     }
 
     private boolean isTelephoneValid(String telephone) {
         return true;
     }
 
-    public void getUser(String email) {
-        uModule.getUser(email);
+    public void getUserByEmail(String email) {
+        uModule.getUserByEmail(email);
+    }
+
+    public void saveUser(User user) {
+        dbControler.eraseUser();
+        dbControler.insertUser(user);
+    }
+
+    public User getUserFromSQL() {
+        return dbControler.getUser();
+    }
+
+    public void logOut() {
+        dbControler.eraseUser();
     }
 }

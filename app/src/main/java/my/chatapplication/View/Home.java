@@ -1,26 +1,79 @@
 package my.chatapplication.View;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 
+import my.chatapplication.Controller.UserController;
+import my.chatapplication.DataHolder.CLASSES;
+import my.chatapplication.DataHolder.User;
 import my.chatapplication.Navigation.NavigationBar;
 import my.chatapplication.R;
 
 
-public class Home extends ActionBarActivity {
+public class Home extends ActionBarActivity implements ChatView{
+
+    private UserController userController;
+    private View homeFormView;
+    private View progressView;
+    private User user;
+    private Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Firebase.setAndroidContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this , NavigationBar.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this , NavigationBar.class);
+//        startActivity(intent);
+        userController = new UserController(this , CLASSES.HOME , this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        connectXmlInit();
+        onClickListner();
+
+        user = (User) getIntent().getExtras().getSerializable("user");
+
+        if(user.getName().equals("") || user.getTelephone().equals("")){
+            userController.getUserByEmail(user.getEmail());
+            showProgress(true);
+        }
+
+    }
+
+    private void onClickListner() {
+        final Context context = this;
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userController.logOut();
+                Intent intent = new Intent(context , Login.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void connectXmlInit() {
+        homeFormView = findViewById(R.id.home_form);
+        progressView = findViewById(R.id.home_progress);
+        logout = (Button) findViewById(R.id.home_log_out);
     }
 
     @Override
@@ -43,5 +96,60 @@ public class Home extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     * @param show is boolean to show progress or no
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            homeFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            homeFormView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    homeFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            homeFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void handleMessage(Message msg) {
+        switch (msg.arg1){
+            case 1: // get User to Save into DB if not exist
+                user.setData(msg.obj);
+                userController.saveUser(user);
+                break;
+            case -1: // not connected
+                showToastMessage("not connected");
+                break;
+        }
+        showProgress(false);
+    }
+
+    private void showToastMessage(String message) {
+        Toast.makeText(this , message , Toast.LENGTH_LONG).show();
     }
 }

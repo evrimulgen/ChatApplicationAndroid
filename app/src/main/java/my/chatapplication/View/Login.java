@@ -3,6 +3,7 @@ package my.chatapplication.View;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Message;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import my.chatapplication.DataHolder.CLASSES;
+import my.chatapplication.DataHolder.User;
 import my.chatapplication.DataHolder.VALIDATION;
 import my.chatapplication.Controller.UserController;
 import my.chatapplication.R;
@@ -31,6 +33,7 @@ public class Login extends ActionBarActivity implements ChatView{
     private AutoCompleteTextView emailTextView;
     private EditText passwordTextView;
     private Button loginButton;
+    private Button signUpButton;
 
     private UserController userController;
 
@@ -39,11 +42,23 @@ public class Login extends ActionBarActivity implements ChatView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         userController = new UserController(this , CLASSES.LOGIN , this);
+        User user = userController.getUserFromSQL();
+        if(user != null && !user.getEmail().equals("") && !user.getPassword().equals("")){
+            Intent intent = new Intent(this, Home.class);
+            intent.putExtra("user" , user);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         connectWithXml();
         onClickListner();
     }
 
     public void onClickListner(){
+        final Context context = this;
         passwordTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -60,12 +75,17 @@ public class Login extends ActionBarActivity implements ChatView{
                 String email = emailTextView.getText().toString();
                 String password = passwordTextView.getText().toString();
                 showProgress(true);
-//                 showToastMessage("start loggin with email " + email + "and password " + password);
                 userController.login(email, password);
-
             }
         });
 
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context , SignUpEmailAndPassowrd.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     public void connectWithXml() {
@@ -74,6 +94,7 @@ public class Login extends ActionBarActivity implements ChatView{
         loginButton = (Button) findViewById(R.id.login_button);
         loginFormView = findViewById(R.id.login_form);
         progressView = findViewById(R.id.login_progress);
+        signUpButton = (Button) findViewById(R.id.login_signup_button);
     }
 
     @Override
@@ -173,7 +194,8 @@ public class Login extends ActionBarActivity implements ChatView{
                 focusView = emailTextView;
                 break;
             case ACCEPTED:
-                Intent intent = new Intent(this, ChatActivity.class);
+                Intent intent = new Intent(this, Home.class);
+                intent.putExtra("user" , new User(email));
                 startActivity(intent);
                 return ;
         }
