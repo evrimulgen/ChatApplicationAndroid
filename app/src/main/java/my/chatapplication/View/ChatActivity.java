@@ -103,19 +103,27 @@ public class ChatActivity extends ListActivity {
     @Override
     protected void onResume() {
         intent = new Intent(this, ChatService.class);
-        stopService(intent);
+        this.stopService(intent);
         super.onResume();
     }
 
     @Override
     public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public boolean stopService(Intent name) {
+        return super.stopService(name);
+    }
+
+    @Override
+    protected void onDestroy() {
         mFirebaseRef.getRoot().child(".info/connected").removeEventListener(mConnectedListener);
         mChatListAdapter.cleanup();
-        showToastMessage("start service");
-        System.out.println("ChatService :: Start");
         intent = new Intent(this, ChatService.class);
         startService(intent);
-        super.onStop();
+        super.onDestroy();
     }
 
     private void sendMessage() {

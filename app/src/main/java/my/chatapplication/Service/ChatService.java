@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -47,11 +48,13 @@ public class ChatService extends Service{
     private Map<String, List<Chat>> chatMap;
     private ChildEventListener mListener;
     private ChatService context = this;
-    boolean firstTime = false;
+    private boolean firstTime = false;
+    private ChildEventListener firebaselisnter;
+    private int count = 0;
 
     private Firebase firebase = new Firebase("https://sngvsimplechatapp.firebaseio.com/Message/chat");
 
-        public void showNotification(Chat chat){
+    public void showNotification(Chat chat){
         //We get a reference to the NotificationManager
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -73,9 +76,15 @@ public class ChatService extends Service{
 
     }
 
+    @Override
+    public void onCreate() {
+        firstTime = false;
+        super.onCreate();
+    }
 
     @Override
     public void onStart(Intent intent, int startId) {
+        firstTime = false;
         super.onStart(intent, startId);
 
     }
@@ -98,34 +107,33 @@ public class ChatService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("Start Service");
-
-        firebase.addChildEventListener(new ChildEventListener() {
+        firstTime = false;
+        firebaselisnter = firebase.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to the database
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                System.out.println("ChatService Added :: " + count++);
                 if (firstTime == false) {
                     firstTime = true;
                     return;
                 }
+
                 Map<String, Object> newPost = (Map<String, Object>) snapshot.getValue();
                 String author = (String) newPost.get("author");
                 String message = (String) newPost.get("message");
-                System.out.println("ChatService :: Author: " + newPost.get("author"));
-                System.out.println("ChatService :: Title: " + newPost.get("message"));
-                showNotification(new Chat(message , author));
+                showNotification(new Chat(message, author));
             }
 
             @Override
             public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
+                System.out.println("ChatService Change :: " + count++);
                 if (firstTime == false) {
                     firstTime = true;
                     return;
                 }
                 String message = (String) snapshot.child("message").getValue();
                 String author = (String) snapshot.child("author").getValue();
-                System.out.println("ChatService :: The updated post title is " + author + " " + message);
-                showNotification(new Chat(message,  author));
+                showNotification(new Chat(message, author));
             }
 
             @Override
@@ -144,7 +152,13 @@ public class ChatService extends Service{
             }
         });
 
-
         return 1;
     }
+
+    @Override
+    public void onDestroy() {
+        firebase.removeEventListener(firebaselisnter);
+//        super.onDestroy();
+    }
+
 }
