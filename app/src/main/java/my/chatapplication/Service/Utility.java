@@ -3,14 +3,16 @@ package my.chatapplication.Service;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.view.View;
 
 /**
  * Created by nasser on 28/07/15.
  */
-public class CommonService {
+public class Utility  extends Activity{
     /**
      * Shows the progress UI and hides the login form.
      * @param show is boolean to show progress or no
@@ -46,5 +48,24 @@ public class CommonService {
             progressView.setVisibility(show ? View.VISIBLE : View.GONE);
             homeFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    public static String removeDot(String msg){
+        String newMsg = msg.replace('.','@');
+        return newMsg;
+    }
+
+    public static void writeInSharedPref(String key , String value , Activity activity){
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(key ,value);
+        editor.commit();
+    }
+
+    public String getFromShared(String key){
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+//        int defaultValue = getResources().getInteger(R.string.saved_high_score_default);
+//        long highScore = sharedPref.getInt(getString(R.string.saved_high_score), defaultValue);
+        return sharedPref.getString(key , "no mail");
     }
 }

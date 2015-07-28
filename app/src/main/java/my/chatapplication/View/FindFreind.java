@@ -96,7 +96,7 @@ public class FindFreind extends ListActivity implements ChatView{
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 showToastMessage(textView.getText().toString());
-                mFindFreindAdapter.setEmail(textView.getText().toString());
+                mFindFreindAdapter.startListner(textView.getText().toString());
                 return false;
             }
         });
@@ -107,7 +107,7 @@ public class FindFreind extends ListActivity implements ChatView{
     }
 
     private void initXml() {
-        email = (EditText) findViewById(R.id.findFreind_email);
+        email = (EditText) findViewById(R.id.findFreind_phoneNumber);
         homeFormView = findViewById(R.id.findFreind_form);
         progressView = findViewById(R.id.findFreind_progress);
 

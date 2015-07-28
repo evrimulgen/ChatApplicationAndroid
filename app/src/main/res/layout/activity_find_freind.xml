@@ -8,12 +8,12 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/findFreind_email"
+        android:id="@+id/findFreind_phoneNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
+        android:inputType="phone"
         android:lines="1"
-        android:hint="@string/findFreind_email"
+        android:hint="@string/findFreind_phoneNumber"
         android:textColorHint="@color/textHint"
         android:textColor="@color/textColor"
         android:singleLine="true" />

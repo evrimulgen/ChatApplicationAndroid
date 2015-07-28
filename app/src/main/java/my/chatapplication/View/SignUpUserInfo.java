@@ -56,7 +56,8 @@ public class SignUpUserInfo extends ActionBarActivity implements ChatView{
         String name = nameTextEdit.getText().toString();
         String telephone = telephoneTextEdit.getText().toString();
         showProgress(true);
-        userController.saveInfo(fillUserObject());
+        user = fillUserObject();
+        userController.saveInfo(user);
     }
 
     private boolean isTelephoneValid(String telep) {
@@ -157,7 +158,8 @@ public class SignUpUserInfo extends ActionBarActivity implements ChatView{
                 focusView = nameTextEdit;
                 break;
             case ACCEPTED:
-                Intent intent = new Intent(this , ChatActivity.class);
+                Intent intent = new Intent(this , Home.class);
+                showToastMessage(user.toString());
                 intent.putExtra("user" , user);
                 startActivity(intent);
                 return ;

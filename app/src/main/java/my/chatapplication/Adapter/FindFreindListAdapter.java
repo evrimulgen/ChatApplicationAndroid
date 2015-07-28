@@ -40,6 +40,7 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
     private Map<String, T> mModelKeys;
     private ChildEventListener mListener;
     private FindFreindListAdapter<T> context = this;
+    private Activity activity;
 
     /**
      * @param mRef        The Firebase location to watch for data changes. Can also be a slice of a location, using some
@@ -48,20 +49,25 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
      * @param mLayout     This is the mLayout used to represent a single list item. You will be responsible for populating an
  *                    instance of the corresponding view with the data from an instance of mModelClass.
      * @param activity    The activity containing the ListView
-     * @param email
+
      */
-    public FindFreindListAdapter(Query mRef, Class<T> mModelClass, int mLayout, final Activity activity, String email) {
+    public FindFreindListAdapter(Query mRef, Class<T> mModelClass, int mLayout, final Activity activity) {
         cleanup();
-        this.mRef =   mRef.orderByChild("email").startAt(email);
+        this.mRef =   mRef;
         this.mModelClass = mModelClass;
         this.mLayout = mLayout;
         mInflater = activity.getLayoutInflater();
         mModels = new ArrayList<T>();
         mModelKeys = new HashMap<String, T>();
+        this.activity = activity;
+    }
 
+    public void initListner(String phoneNumber){
+        cleanup();
+        Query newmRef = this.mRef.orderByChild("telephone").equalTo(phoneNumber);
 
         // Look for all child events. We will then map them to our own internal ArrayList, which backs ListView
-        mListener = this.mRef.addChildEventListener(new ChildEventListener() {
+        mListener = newmRef.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
@@ -145,6 +151,8 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
         });
     }
+
+
 
     public void showToastMessage(String s , Activity activity){
         Toast.makeText(activity , s , Toast.LENGTH_LONG).show();

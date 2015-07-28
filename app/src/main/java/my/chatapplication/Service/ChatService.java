@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import my.chatapplication.DataHolder.Chat;
+import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
 
 /**
@@ -51,8 +52,9 @@ public class ChatService extends Service{
     private boolean firstTime = false;
     private ChildEventListener firebaselisnter;
     private int count = 0;
+    private Utility utility = new Utility();
 
-    private Firebase firebase = new Firebase("https://sngvsimplechatapp.firebaseio.com/Message/chat");
+    private Firebase firebase = new Firebase("https://sngvsimplechatapp.firebaseio.com/Notification");
 
     public void showNotification(Chat chat){
         //We get a reference to the NotificationManager
@@ -107,12 +109,14 @@ public class ChatService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        firebase = firebase.child(Utility.removeDot(intent.getExtras().getString("mail")));
         firstTime = false;
         firebaselisnter = firebase.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to the database
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                System.out.println("ChatService Added :: " + count++);
+                System.out.println("service data :: " + snapshot.getKey());
+                System.out.println("service data :: " + snapshot.getValue().toString());
                 if (firstTime == false) {
                     firstTime = true;
                     return;
@@ -126,7 +130,8 @@ public class ChatService extends Service{
 
             @Override
             public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
-                System.out.println("ChatService Change :: " + count++);
+                System.out.println("service data :: " + snapshot.getKey());
+                System.out.println("service data :: " + snapshot.getValue().toString());
                 if (firstTime == false) {
                     firstTime = true;
                     return;

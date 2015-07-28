@@ -3,8 +3,10 @@ package my.chatapplication.View;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
@@ -21,6 +23,7 @@ import my.chatapplication.Controller.UserController;
 import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
+import my.chatapplication.Service.Utility;
 
 
 public class Home extends ActionBarActivity implements ChatView{
@@ -58,6 +61,7 @@ public class Home extends ActionBarActivity implements ChatView{
             showProgress(true);
         }
 
+        Utility.writeInSharedPref("mail"  , user.getEmail()  , this );
     }
 
     private void onClickListner() {
