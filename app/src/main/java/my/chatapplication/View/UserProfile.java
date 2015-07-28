@@ -5,21 +5,41 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.Controller.UserController;
+import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
 
 public class UserProfile extends ActionBarActivity implements ChatView{
     private UserController userController;
+    private User user;
+    private EditText name;
+    private EditText phoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         userController = new UserController(this , CLASSES.USER_PROFILE , this);
-        userController.getUserByEmail(getIntent().getExtras().getString("email"));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        user = (User) getIntent().getExtras().getSerializable("user");
+
+        initXml();
+    }
+
+    private void initXml() {
+        phoneNumber = (EditText) findViewById(R.id.userProfile_phone);
+        name = (EditText) findViewById(R.id.userProfile_name);
+
+        phoneNumber.setText(user.getTelephone());
+        name.setText(user.getName());
     }
 
     private void showToastMessage(String s) {

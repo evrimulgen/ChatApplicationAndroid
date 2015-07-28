@@ -25,7 +25,7 @@ import my.chatapplication.R;
 public class ChatActivity extends ListActivity {
 
     // TODO: change this to your own Firebase URL
-    private static final String FIREBASE_URL = "https://sngvsimplechatapp.firebaseio.com/Message";
+    private static String FIREBASE_URL = "https://sngvsimplechatapp.firebaseio.com/Message";
 
     private String mUsername = "nasser";
     private Firebase mFirebaseRef;

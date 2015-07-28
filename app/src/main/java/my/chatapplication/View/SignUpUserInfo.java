@@ -35,7 +35,7 @@ public class SignUpUserInfo extends ActionBarActivity implements ChatView{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_domain);
+        setContentView(R.layout.activity_user_info);
 
         userController = new UserController(this , CLASSES.SIGNUP_USERINFO , this);
 

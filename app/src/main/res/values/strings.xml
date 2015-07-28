@@ -39,5 +39,10 @@
     <string name="title_sign_up">Sign Up</string>
     <string name="title_user_domain">User Info</string>
 
+    <string name="userProfile_phone">enter your phone number</string>
+    <string name="userProfile_name">enter your name</string>
+    <string name="title_activity_find_freind">FindFreind</string>
+    <string name="findFreind_email">enter email</string>
+
 
 </resources>

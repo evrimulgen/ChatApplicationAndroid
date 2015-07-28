@@ -15,31 +15,47 @@ public class UMSQLite extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "ChatApplication";
 
-    //Table Name
-    public static final String TABLE_USER_NAME = "user";
+    // Table User
+    public static final String USER_TABLE_NAME = "user";
 
-    // Table Names
-    public static final String TABLE_EMAIL = "email";
-    public static final String TABLE_PASSWORD = "password";
-    public static final String TABLE_TELEPONE = "telephone";
-    public static final String TABLE_NAME = "name";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_PASSWORD = "password";
+    public static final String USER_TELEPHONE = "telephone";
+    public static final String USER_NAME = "name";
+    // *****************************************************
 
-    public static final String[] selection = {
-        TABLE_EMAIL ,
-        TABLE_PASSWORD ,
-        TABLE_NAME ,
-        TABLE_TELEPONE
+    // Table Chat
+    public static final String CHAT_TABLE_NAME = "chat";
+    public static final String CHAT_ID = "id";
+    public static final String CHAT_MESSAGE = "message";
+    // ****************************************************
+
+    public static final String[] selection_user = {
+            USER_EMAIL,
+            USER_PASSWORD,
+            USER_NAME,
+            USER_TELEPHONE
+    };
+
+    public static final String[] selection_chat = {
+            CHAT_ID,
+            CHAT_MESSAGE
     };
 
     // Table Create Statements
     // Todo table create statement
     private static final String CREATE_TABLE_USER =
-            "CREATE TABLE "  + TABLE_USER_NAME + "(" +
-            TABLE_EMAIL    + " TEXT PRIMARY KEY ," +
-            TABLE_PASSWORD + " TEXT NOT NULL ," +
-            TABLE_TELEPONE + " TEXT NOT NULL , " +
-            TABLE_NAME     + " TEXT NOT NULL"
+            "CREATE TABLE "  + USER_TABLE_NAME + "(" +
+                    USER_EMAIL + " TEXT PRIMARY KEY ," +
+                    USER_PASSWORD + " TEXT NOT NULL ," +
+                    USER_TELEPHONE + " TEXT NOT NULL , " +
+                    USER_NAME + " TEXT NOT NULL"
             + ")";
+
+    private static final String CREATE_TABLE_CHAT =
+            "CREATE TABLE " + CHAT_TABLE_NAME + "("+
+                    CHAT_ID + " INTEGER PRIMARY KEY , " +
+                    CHAT_MESSAGE + " TEXT NOT NULL)";
 
     public UMSQLite(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,13 +65,14 @@ public class UMSQLite extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // creating required tables
         db.execSQL(CREATE_TABLE_USER);
+        db.execSQL(CREATE_TABLE_CHAT);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // on upgrade drop older tables
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_NAME);
-
+        db.execSQL("DROP TABLE IF EXISTS " + USER_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CHAT_TABLE_NAME);
         // create new tables
         onCreate(db);
     }

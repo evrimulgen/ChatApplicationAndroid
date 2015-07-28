@@ -25,5 +25,29 @@
             android:layout_height="wrap_content"
             android:text="log out"
             android:textColor="#000"/>
+
+        <Button
+            android:id="@+id/home_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="chat"
+            android:textColor="#000"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="profile"
+            android:id="@+id/home_profile"
+            android:textColor="#000"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="find Freind"
+            android:id="@+id/home_findFriend"
+            android:textColor="#000"
+            />
     </LinearLayout>
+
 </LinearLayout>

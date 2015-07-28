@@ -12,6 +12,7 @@ import my.chatapplication.Model.UMSQLController;
 import my.chatapplication.View.ChatView;
 import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.DataHolder.VALIDATION;
+import my.chatapplication.View.FindFreind;
 import my.chatapplication.View.Home;
 import my.chatapplication.View.ListFreind;
 import my.chatapplication.View.Login;
@@ -49,6 +50,9 @@ public class UserController extends Handler {
                 break;
             case LIST_FREIND:
                 this.classView = ((ListFreind)classView);
+                break;
+            case FIND_FREIND:
+                this.classView = ((FindFreind)classView);
         }
         uModule = new UMSFireBase(this , context);
         dbControler = new UMSQLController(context);
@@ -117,7 +121,7 @@ public class UserController extends Handler {
         switch (status){
             case ACCEPTED:
                 // showToastMessage("Accepted state in UserControll and start login");
-                uModule.signUp(email, password);
+                uModule.insertUser(email, password);
                 break;
             default:
                 // showToastMessage("false and handle message");
@@ -157,7 +161,7 @@ public class UserController extends Handler {
             return ;
         }
 
-        uModule.signUp(user);
+        uModule.insertUser(user);
         try{
             dbControler.insertUser(user);
         }catch (Exception e){

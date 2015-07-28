@@ -9,6 +9,7 @@ import com.firebase.client.Query;
 
 import my.chatapplication.DataHolder.Chat;
 import my.chatapplication.R;
+import my.chatapplication.View.FindFreind;
 
 /**
  * @author greg

@@ -29,7 +29,7 @@ import java.util.Map;
  *
  * @param <T> The class type to use as a model for the data contained in the children of the given Firebase location
  */
-public abstract class FirebaseListAdapter<T> extends BaseAdapter{
+public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
     private Query mRef;
     private Class<T> mModelClass;
@@ -38,30 +38,33 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter{
     private List<T> mModels;
     private Map<String, T> mModelKeys;
     private ChildEventListener mListener;
-    private FirebaseListAdapter<T> context = this;
+    private FindFreindListAdapter<T> context = this;
 
     /**
      * @param mRef        The Firebase location to watch for data changes. Can also be a slice of a location, using some
      *                    combination of <code>limit()</code>, <code>startAt()</code>, and <code>endAt()</code>,
      * @param mModelClass Firebase will marshall the data at a location into an instance of a class that you provide
      * @param mLayout     This is the mLayout used to represent a single list item. You will be responsible for populating an
-     *                    instance of the corresponding view with the data from an instance of mModelClass.
+ *                    instance of the corresponding view with the data from an instance of mModelClass.
      * @param activity    The activity containing the ListView
+     * @param email
      */
-    public FirebaseListAdapter(Query mRef, Class<T> mModelClass, int mLayout, Activity activity) {
-        this.mRef = mRef;
+    public FindFreindListAdapter(Query mRef, Class<T> mModelClass, int mLayout, Activity activity, String email) {
+        cleanup();
+        this.mRef = mRef.orderByValue().startAt(email);
         this.mModelClass = mModelClass;
         this.mLayout = mLayout;
         mInflater = activity.getLayoutInflater();
         mModels = new ArrayList<T>();
         mModelKeys = new HashMap<String, T>();
 
+
         // Look for all child events. We will then map them to our own internal ArrayList, which backs ListView
         mListener = this.mRef.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                T model = dataSnapshot.getValue(FirebaseListAdapter.this.mModelClass);
+                T model = dataSnapshot.getValue(FindFreindListAdapter.this.mModelClass);
                 mModelKeys.put(dataSnapshot.getKey(), model);
 
                 // Insert into the correct location, based on previousChildName
@@ -87,7 +90,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter{
                 // One of the mModels changed. Replace it in our list and name mapping
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);
-                T newModel = dataSnapshot.getValue(FirebaseListAdapter.this.mModelClass);
+                T newModel = dataSnapshot.getValue(FindFreindListAdapter.this.mModelClass);
                 int index = mModels.indexOf(oldModel);
 
                 mModels.set(index, newModel);
@@ -113,7 +116,7 @@ public abstract class FirebaseListAdapter<T> extends BaseAdapter{
                 // A model changed position in the list. Update our list accordingly
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);
-                T newModel = dataSnapshot.getValue(FirebaseListAdapter.this.mModelClass);
+                T newModel = dataSnapshot.getValue(FindFreindListAdapter.this.mModelClass);
                 int index = mModels.indexOf(oldModel);
                 mModels.remove(index);
                 if (previousChildName == null) {

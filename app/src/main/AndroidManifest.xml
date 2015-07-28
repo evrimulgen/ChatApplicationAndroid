@@ -13,12 +13,12 @@
         <activity
             android:name=".View.Login"
             android:label="@string/title_sign_in"
-            android:noHistory="true">
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".Navigation.NavigationBar"
@@ -27,34 +27,36 @@
             android:name=".View.ChatActivity"
             android:label="@string/title_chat"
             android:parentActivityName=".View.Home"
-            android:theme="@style/AppTheme"
-            />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".View.Home"
             android:label="@string/title_home"
-            android:noHistory="true"/>
-
+            android:noHistory="true" />
         <activity
             android:name=".View.SignUpEmailAndPassowrd"
             android:label="@string/title_sign_up"
-            android:parentActivityName=".View.Login"/>
-
+            android:parentActivityName=".View.Login" />
         <activity
             android:name=".View.SignUpUserInfo"
             android:label="@string/title_user_domain" />
-
         <activity
             android:name=".View.UserProfile"
             android:label="@string/title_profile"
-            android:parentActivityName=".View.Home">
+            android:parentActivityName=".View.Home" >
         </activity>
+
         <service
             android:name=".Service.ChatService"
             android:label="Chat Service" />
+
         <activity
             android:name=".View.ListFreind"
             android:label="@string/title_list_freind"
-            android:parentActivityName=".View.Home">
+            android:parentActivityName=".View.Home" >
+        </activity>
+        <activity
+            android:name=".View.FindFreind"
+            android:label="@string/title_activity_find_freind" >
         </activity>
     </application>
 

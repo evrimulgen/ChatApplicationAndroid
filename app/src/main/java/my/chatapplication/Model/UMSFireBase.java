@@ -34,7 +34,7 @@ public class UMSFireBase {
         myFirebaseRef = new Firebase(context.getString(R.string.fireBaseUrl));
     }
 
-    public void signUp(String email, String password){
+    public void insertUser(String email, String password){
         myFirebaseRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
@@ -84,7 +84,7 @@ public class UMSFireBase {
         Toast.makeText(context , s , Toast.LENGTH_LONG).show();
     }
 
-    public void signUp(User user){
+    public void insertUser(User user){
         Firebase usersave = myFirebaseRef.child("users").child(removeDot(user.getEmail()));
 
         usersave.setValue(user, new Firebase.CompletionListener() {
