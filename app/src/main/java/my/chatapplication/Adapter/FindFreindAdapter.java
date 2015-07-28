@@ -10,6 +10,7 @@ import com.firebase.client.Query;
 
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
+import my.chatapplication.Service.Utility;
 import my.chatapplication.View.ChatActivity;
 import my.chatapplication.View.FindFreind;
 
@@ -49,7 +50,7 @@ public class FindFreindAdapter extends FindFreindListAdapter<User> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity , ChatActivity.class);
-                intent.putExtra("user" , model);
+                intent.putExtra(Utility.FREIND_USER, model);
                 activity.startActivity(intent);
             }
         });

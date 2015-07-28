@@ -46,7 +46,7 @@
         </activity>
 
         <service
-            android:name=".Service.ChatService"
+            android:name=".Service.ReceiveService"
             android:label="Chat Service" />
 
         <activity

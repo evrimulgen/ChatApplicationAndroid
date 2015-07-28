@@ -22,8 +22,10 @@ import my.chatapplication.Controller.UserController;
 import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.DataHolder.Chat;
 import my.chatapplication.Adapter.ChatListAdapter;
+import my.chatapplication.DataHolder.NotificationDomain;
 import my.chatapplication.DataHolder.User;
-import my.chatapplication.Service.ChatService;
+import my.chatapplication.Service.ChatNotificationService;
+import my.chatapplication.Service.ReceiveService;
 import my.chatapplication.R;
 import my.chatapplication.Service.Utility;
 
@@ -39,6 +41,7 @@ public class ChatActivity extends ListActivity  implements ChatView{
     private ChatListAdapter mChatListAdapter;
     private Intent intent;
     private UserController userController;
+    private ChatNotificationService notificationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +50,9 @@ public class ChatActivity extends ListActivity  implements ChatView{
         userController = new UserController(this , CLASSES.CHAT_ACTIVITY , this );
 
         myUser = userController.getUserFromSQL();
-        freindUser = (User) getIntent().getExtras().getSerializable("user");
-        setTitle("Chatting as " + freindUser.getName());
+        freindUser = (User) getIntent().getExtras().getSerializable(Utility.FREIND_USER);
 
-        showToastMessage(getUrl());
+        setTitle("Chatting as " + freindUser.getName());
 
         // Setup our Firebase mFirebaseRef
         mFirebaseRef = new Firebase(FIREBASE_URL).child("chat").child(getUrl());
@@ -74,16 +76,15 @@ public class ChatActivity extends ListActivity  implements ChatView{
             }
         });
 
+        notificationService = new ChatNotificationService(myUser.getEmail());
     }
 
     private String getUrl() {
         String url = "";
-
         if(myUser.getEmail().compareTo(freindUser.getEmail()) > 0)
             url = Utility.removeDot(myUser.getEmail()) + "_" + Utility.removeDot(freindUser.getEmail());
         else
             url = Utility.removeDot(freindUser.getEmail()) + "_" + Utility.removeDot(myUser.getEmail());
-
         return url;
     }
 
@@ -124,7 +125,7 @@ public class ChatActivity extends ListActivity  implements ChatView{
 
     @Override
     protected void onResume() {
-        intent = new Intent(this, ChatService.class);
+        intent = new Intent(this, ReceiveService.class);
         this.stopService(intent);
         super.onResume();
     }
@@ -143,9 +144,12 @@ public class ChatActivity extends ListActivity  implements ChatView{
     protected void onDestroy() {
         mFirebaseRef.getRoot().child(".info/connected").removeEventListener(mConnectedListener);
         mChatListAdapter.cleanup();
-        intent = new Intent(this, ChatService.class);
-        intent.putExtra("mail" , myUser.getEmail());
+
+        intent = new Intent(this, ReceiveService.class);
+        intent.putExtra(Utility.MY_USER , myUser);
         startService(intent);
+
+        notificationService.removeMessageNotification(freindUser.getEmail());
         super.onDestroy();
     }
 
@@ -158,6 +162,8 @@ public class ChatActivity extends ListActivity  implements ChatView{
             // Create a new, auto-generated child of that chat location, and save our chat data there
             mFirebaseRef.push().setValue(chat);
             inputText.setText("");
+            showToastMessage(myUser.toString());
+            notificationService.pushMessageNotification(new NotificationDomain(myUser.getName() , input), freindUser.getEmail());
         }
     }
 

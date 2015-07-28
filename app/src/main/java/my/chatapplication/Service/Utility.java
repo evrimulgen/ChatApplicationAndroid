@@ -13,6 +13,9 @@ import android.view.View;
  * Created by nasser on 28/07/15.
  */
 public class Utility  extends Activity{
+    public static String FREIND_USER = "FREIND_USER";
+    public static String MY_USER = "MY_USER";
+
     /**
      * Shows the progress UI and hides the login form.
      * @param show is boolean to show progress or no

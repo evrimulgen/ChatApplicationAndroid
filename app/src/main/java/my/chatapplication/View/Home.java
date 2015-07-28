@@ -23,6 +23,7 @@ import my.chatapplication.Controller.UserController;
 import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
+import my.chatapplication.Service.ReceiveService;
 import my.chatapplication.Service.Utility;
 
 
@@ -55,10 +56,16 @@ public class Home extends ActionBarActivity implements ChatView{
         onClickListner();
 
         user = (User) getIntent().getExtras().getSerializable("user");
+        showToastMessage(user.toString());
+
 
         if(user.getName().equals("") || user.getTelephone().equals("")){
             userController.getUserByEmail(user.getEmail());
             showProgress(true);
+        }else {
+            Intent intent = new Intent(this, ReceiveService.class);
+            intent.putExtra(Utility.MY_USER, user);
+            startService(intent);
         }
 
         Utility.writeInSharedPref("mail"  , user.getEmail()  , this );
@@ -177,6 +184,9 @@ public class Home extends ActionBarActivity implements ChatView{
             case 1: // get User to Save into DB if not exist
                 user.setData(msg.obj);
                 userController.saveUser(user);
+                Intent intent = new Intent(this, ReceiveService.class);
+                intent.putExtra(Utility.MY_USER, user);
+                startService(intent);
                 break;
             case -1: // not connected
                 showToastMessage("not connected");

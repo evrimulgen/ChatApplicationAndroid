@@ -3,10 +3,14 @@ package my.chatapplication.DataHolder;
 /**
  * Created by nasser on 28/07/15.
  */
-public class Notification {
+public class NotificationDomain {
     String name;
-    String email;
     String message;
+
+    public NotificationDomain(String name, String message) {
+        this.name = name;
+        this.message = message;
+    }
 
     public String getName() {
         return name;
@@ -14,14 +18,6 @@ public class Notification {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getMessage() {

@@ -1,6 +1,5 @@
 package my.chatapplication.Service;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,19 +7,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,20 +33,17 @@ import my.chatapplication.R;
  * you like and this class will handle updating the list as the data changes.
  *
  */
-public class ChatService extends Service{
+public class ReceiveService extends Service{
+
+    private final String NO_MAIL = "No Mail";
 
     private Query mRef;
-    private Class<Chat> mModelClass;
-    private int mLayout;
-    private LayoutInflater mInflater;
     private List<Chat> mModels;
-    private Map<String, List<Chat>> chatMap;
     private ChildEventListener mListener;
-    private ChatService context = this;
     private boolean firstTime = false;
     private ChildEventListener firebaselisnter;
-    private int count = 0;
-    private Utility utility = new Utility();
+
+    private User myUser , freindUser;
 
     private Firebase firebase = new Firebase("https://sngvsimplechatapp.firebaseio.com/Notification");
 
@@ -80,15 +71,7 @@ public class ChatService extends Service{
 
     @Override
     public void onCreate() {
-        firstTime = false;
         super.onCreate();
-    }
-
-    @Override
-    public void onStart(Intent intent, int startId) {
-        firstTime = false;
-        super.onStart(intent, startId);
-
     }
 
     @Override
@@ -97,7 +80,7 @@ public class ChatService extends Service{
     }
 
 
-    public ChatService() {
+    public ReceiveService() {
         firstTime = false;
     }
 
@@ -109,18 +92,28 @@ public class ChatService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        firebase = firebase.child(Utility.removeDot(intent.getExtras().getString("mail")));
-        firstTime = false;
+        myUser = (User) intent.getExtras().getSerializable(Utility.MY_USER);
+        freindUser = (User) intent.getExtras().getSerializable(Utility.FREIND_USER);
+
+        if(freindUser != null)
+            System.out.println("service data :: start my mail is " +  Utility.removeDot(myUser.getEmail()) +
+                                                    "and my freind mail is " + freindUser.getEmail() );
+        else
+            System.out.println("service data :: start my mail is " +  Utility.removeDot(myUser.getEmail()) +
+                    "and my freind mail is null" );
+
+        firebase = firebase.child(Utility.removeDot(myUser.getEmail()));
+
         firebaselisnter = firebase.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to the database
+
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 System.out.println("service data :: " + snapshot.getKey());
                 System.out.println("service data :: " + snapshot.getValue().toString());
-                if (firstTime == false) {
-                    firstTime = true;
-                    return;
-                }
+
+                if(freindUser  != null && snapshot.getKey().equals(Utility.removeDot(freindUser.getEmail())))
+                        return ;
 
                 Map<String, Object> newPost = (Map<String, Object>) snapshot.getValue();
                 String author = (String) newPost.get("author");
@@ -130,12 +123,12 @@ public class ChatService extends Service{
 
             @Override
             public void onChildChanged(DataSnapshot snapshot, String previousChildKey) {
-                System.out.println("service data :: " + snapshot.getKey());
+               System.out.println("service data :: " + snapshot.getKey());
                 System.out.println("service data :: " + snapshot.getValue().toString());
-                if (firstTime == false) {
-                    firstTime = true;
-                    return;
-                }
+
+                if(freindUser  != null && snapshot.getKey().equals(Utility.removeDot(freindUser.getEmail())))
+                    return ;
+
                 String message = (String) snapshot.child("message").getValue();
                 String author = (String) snapshot.child("author").getValue();
                 showNotification(new Chat(message, author));
