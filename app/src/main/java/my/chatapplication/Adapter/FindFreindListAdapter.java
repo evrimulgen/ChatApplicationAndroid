@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -49,9 +50,9 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
      * @param activity    The activity containing the ListView
      * @param email
      */
-    public FindFreindListAdapter(Query mRef, Class<T> mModelClass, int mLayout, Activity activity, String email) {
+    public FindFreindListAdapter(Query mRef, Class<T> mModelClass, int mLayout, final Activity activity, String email) {
         cleanup();
-        this.mRef = mRef.orderByValue().startAt(email);
+        this.mRef =   mRef.orderByChild("email").startAt(email);
         this.mModelClass = mModelClass;
         this.mLayout = mLayout;
         mInflater = activity.getLayoutInflater();
@@ -64,6 +65,7 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
                 T model = dataSnapshot.getValue(FindFreindListAdapter.this.mModelClass);
                 mModelKeys.put(dataSnapshot.getKey(), model);
 
@@ -86,7 +88,7 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
                 // One of the mModels changed. Replace it in our list and name mapping
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);
@@ -101,7 +103,7 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
                 // A model was removed from the list. Remove it from our list and the name mapping
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);
@@ -112,7 +114,7 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-
+                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
                 // A model changed position in the list. Update our list accordingly
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);
@@ -136,6 +138,7 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
+
                 Log.e("FirebaseListAdapter", "Listen was cancelled, no more updates will occur");
                 System.out.println("FIREBASE ADAPTER CANCELED");
             }
@@ -143,11 +146,21 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
         });
     }
 
+    public void showToastMessage(String s , Activity activity){
+        Toast.makeText(activity , s , Toast.LENGTH_LONG).show();
+    }
+
     public void cleanup() {
+
         // We're being destroyed, let go of our mListener and forget about all of the mModels
-        mRef.removeEventListener(mListener);
-        mModels.clear();
-        mModelKeys.clear();
+        if(mListener != null)
+            mRef.removeEventListener(mListener);
+
+        if(mModels != null)
+            mModels.clear();
+
+        if(mModelKeys != null)
+            mModelKeys.clear();
     }
 
     @Override

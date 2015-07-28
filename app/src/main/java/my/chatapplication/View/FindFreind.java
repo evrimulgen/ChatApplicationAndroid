@@ -37,7 +37,7 @@ public class FindFreind extends ListActivity implements ChatView{
     private View progressView;
 
     // TODO: change this to your own Firebase URL
-    private static String FIREBASE_URL = "https://sngvsimplechatapp.firebaseio.com/users";
+    private static String FIREBASE_URL = "https://sngvsimplechatapp.firebaseio.com";
 
     private Firebase mFirebaseRef;
     private ValueEventListener mConnectedListener;
@@ -49,7 +49,7 @@ public class FindFreind extends ListActivity implements ChatView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_freind);
         userController = new UserController(this , CLASSES.FIND_FREIND , this);
-
+        mFirebaseRef = new Firebase(FIREBASE_URL).child("users");
     }
 
     @Override
@@ -61,7 +61,7 @@ public class FindFreind extends ListActivity implements ChatView{
         // Setup our view and list adapter. Ensure it scrolls to the bottom as data changes
         final ListView listView = getListView();
         // Tell our list adapter that we only want 50 messages at a time
-        mFindFreindAdapter = new FindFreindAdapter(mFirebaseRef.limit(50), this, R.layout.find_freind_item , "");
+        mFindFreindAdapter = new FindFreindAdapter(mFirebaseRef , this, R.layout.find_freind_item , "");
         listView.setAdapter(mFindFreindAdapter);
         mFindFreindAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -137,7 +137,6 @@ public class FindFreind extends ListActivity implements ChatView{
 
     @Override
     public void handleMessage(Message msg) {
-
     }
 
 
