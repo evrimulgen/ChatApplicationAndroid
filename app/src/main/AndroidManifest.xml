@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <activity
+    <application
         android:name=".Service.ChatApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -49,10 +49,7 @@
         <activity
             android:name=".View.UserProfile"
             android:label="@string/title_profile"
-            android:parentActivityName="my.chatapplication.View.Home">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="my.chatapplication.View.Home" />
+            android:parentActivityName=".View.Home" >
         </activity>
 
         <service
