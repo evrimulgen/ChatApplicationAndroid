@@ -80,20 +80,38 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
                     public void onChildChanged(DataSnapshot dataSnapshot, String previousChildKey) {
                         System.out.println("listen service :: " + dataSnapshot.getValue());
                         // One of the mModels changed. Replace it in our list and name mapping
+
                         Map<String , Object > mp = (Map<String, Object>) dataSnapshot.getValue();
                         String name = (String) mp.get("name");
                         String message = (String) mp.get("message");
                         String email = (String) mp.get("email");
 
-                        mModels.add(new LastMessage(name, message, email)) ;
+                        LastMessage lastMessage = new LastMessage(name , message , email);
 
+                        for(LastMessage msg : mModels){
+                            if(msg.equals(lastMessage)){
+                                mModels.remove(msg);
+                                mModels.add(0,lastMessage);
+                            }
+                        }
                         notifyDataSetChanged();
-
                     }
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        Map<String , Object > mp = (Map<String, Object>) dataSnapshot.getValue();
+                        String name = (String) mp.get("name");
+                        String message = (String) mp.get("message");
+                        String email = (String) mp.get("email");
 
+                        LastMessage lastMessage = new LastMessage(name , message , email);
+
+                        for(LastMessage msg : mModels){
+                            if(msg.equals(lastMessage)){
+                                mModels.remove(msg);
+                            }
+                        }
+                        notifyDataSetChanged();
                     }
 
                     @Override

@@ -47,4 +47,11 @@ public class LastMessage {
     public String toString() {
         return "name " + getName() + " email " + email + " message " + message ;
     }
+
+    public boolean equals(LastMessage o) {
+        if(name.equals(o.getName()) && email.equals(o.getEmail())){
+            return true;
+        }
+        return false;
+    }
 }
