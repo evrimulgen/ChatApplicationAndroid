@@ -57,7 +57,7 @@ public class UMSFireBase {
         myFirebaseRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(AuthData authData) {
-                // showToastMessage("get Accepted from fire base");
+                // // showToastMessage("get Accepted from fire base");
                 Message message = new Message();
                 message.obj = VALIDATION.ACCEPTED;
                 handleMessage(message);
@@ -66,7 +66,7 @@ public class UMSFireBase {
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 Message message = new Message();
-                // showToastMessage("error with status code is " + firebaseError.getCode());
+                // // showToastMessage("error with status code is " + firebaseError.getCode());
                 switch (firebaseError.getCode()) {
                     case -16:
                         message.obj = VALIDATION.PASSWORD_INVALID;
@@ -131,16 +131,16 @@ public class UMSFireBase {
                 Message message = new Message();
                 message.arg1 = -1;
                 message.obj = VALIDATION.TRY_AGAIN_LATER;
-                showToastMessage(Integer.toString(firebaseError.getCode()));
-                showToastMessage(firebaseError.getDetails());
-                showToastMessage(firebaseError.getMessage());
+                // showToastMessage(Integer.toString(firebaseError.getCode()));
+                // showToastMessage(firebaseError.getDetails());
+                // showToastMessage(firebaseError.getMessage());
                 handleMessage(message);
             }
         });
     }
 
     public void handleMessage(Message msg){
-        // showToastMessage("message handler in UMSFireBase " + msg.obj );
+        // // showToastMessage("message handler in UMSFireBase " + msg.obj );
         loginHandler.handleMessage(msg);
     }
 

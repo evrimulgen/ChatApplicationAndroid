@@ -41,6 +41,29 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:paddingTop="20dp"
+                android:paddingLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_email_black_48dp"
+                    android:paddingRight="10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/userProfile_phone"
+                    android:id="@+id/userProfile_email"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:textColor="#000"
+                    android:textSize="25sp"/>
+
+            </LinearLayout>
         <LinearLayout
         android:paddingTop="20dp"
         android:paddingLeft="20dp"
@@ -86,6 +109,7 @@
                 android:textSize="25sp"/>
 
         </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

@@ -166,7 +166,7 @@ public class ChatActivity extends ListActivity  implements ChatView{
             // Create a new, auto-generated child of that chat location, and save our chat data there
             mFirebaseRef.push().setValue(chat);
             inputText.setText("");
-            showToastMessage(myUser.toString());
+            // showToastMessage(myUser.toString());
 //            String name, String message, String email
             notificationService.pushMessageNotification(new NotificationDomain(myUser.getName(), input , myUser.getEmail()), freindUser.getEmail());
             notificationService.setMyMail(myUser.getEmail());
@@ -185,4 +185,5 @@ public class ChatActivity extends ListActivity  implements ChatView{
     public void handleMessage(Message msg) {
 
     }
+
 }

@@ -21,6 +21,7 @@ import my.chatapplication.R;
 import my.chatapplication.Service.Utility;
 import my.chatapplication.View.ChatActivity;
 import my.chatapplication.View.ChatView;
+import my.chatapplication.View.FreindList;
 
 /**
  * Created by nasser on 29/07/15.
@@ -30,6 +31,7 @@ public class FreindListAdatper extends FreindListBaseAdapter  implements ChatVie
     private User myUser;
     private Activity activity;
     private UserController userController;
+    private FreindList freindList;
 
     /**
      * @param mLayout     This is the mLayout used to represent a single list item. You will be responsible for populating an
@@ -37,17 +39,18 @@ public class FreindListAdatper extends FreindListBaseAdapter  implements ChatVie
      * @param activity    The activity containing the ListView
      * @param myUser
      */
-    public FreindListAdatper(  int mLayout ,  Activity activity , User myUser) {
-        super(mLayout, activity, myUser);
+    public FreindListAdatper(  int mLayout ,  Activity activity , User myUser , FreindList freindList) {
+        super(mLayout, activity, myUser , freindList);
         this.myUser = myUser;
         this.activity = activity;
         System.out.println("listen service :: done initliaze base adapter and user controller");
         userController = new UserController(this , CLASSES.FREIND_LIST_ADAPTER , activity.getApplicationContext());
+        this.freindList = freindList;
     }
 
     @Override
     protected void populateView(View v, final LastMessage model) {
-        showToastMessage(model.toString() , activity);
+        // showToastMessage(model.toString() , activity);
         ((TextView)v.findViewById(R.id.lastMessage_name)).setText(model.getName());
         ((TextView)v.findViewById(R.id.lastMessage_message)).setText(model.getMessage());
         v.setOnClickListener(new View.OnClickListener() {

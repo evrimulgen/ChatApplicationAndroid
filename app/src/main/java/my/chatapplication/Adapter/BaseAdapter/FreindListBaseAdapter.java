@@ -1,6 +1,7 @@
 package my.chatapplication.Adapter.BaseAdapter;
 
 import android.app.Activity;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import java.util.Map;
 import my.chatapplication.DataHolder.LastMessage;
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.Service.Utility;
+import my.chatapplication.View.FreindList;
 
 /**
  * Created by nasser on 29/07/15.
@@ -44,17 +47,17 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
          * @param activity    The activity containing the ListView
 
          */
-        public FreindListBaseAdapter( int mLayout, final Activity activity, User myUser) {
+        public FreindListBaseAdapter( int mLayout, final Activity activity, User myUser , FreindList freindList) {
             cleanup();
             this.mLayout = mLayout;
             mInflater = activity.getLayoutInflater();
             mModels = new ArrayList<LastMessage>();
             this.activity = activity;
             this.myUser = myUser;
-            initListner();
+            initListner(freindList);
         }
 
-        public void initListner(){
+        public void initListner(final FreindList freindList){
             cleanup();
             Query newmRef = firebase.child(Utility.removeDot(myUser.getEmail()));
             System.out.println("listen service :: start " + Utility.removeDot(myUser.getEmail()));
@@ -65,6 +68,7 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
 
                     @Override
                     public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                        freindList.handleMessage(new Message());
                         System.out.println("listen service :: " + snapshot.getValue());
                         Map<String , Object > mp = (Map<String, Object>) snapshot.getValue();
                         String name = (String) mp.get("name");
@@ -78,6 +82,8 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String previousChildKey) {
+                        freindList.handleMessage(new Message());
+
                         System.out.println("listen service :: " + dataSnapshot.getValue());
                         // One of the mModels changed. Replace it in our list and name mapping
 
@@ -88,23 +94,38 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
 
                         LastMessage lastMessage = new LastMessage(name , message , email);
 
-                        for(LastMessage msg : mModels){
-                            if(msg.equals(lastMessage)){
-                                mModels.remove(msg);
-                                mModels.add(0,lastMessage);
+                        for(int i = 0 ; i < mModels.size() ; i++){
+                            if( mModels.get(i).equals(lastMessage)) {
+                                mModels.get(i).setMessage(lastMessage.getMessage());
+                                while (i != 0) {
+                                    i = mModels.indexOf(lastMessage);
+                                    Collections.swap(mModels , i , i-1);
+                                }
                             }
                         }
+
                         notifyDataSetChanged();
                     }
 
                     @Override
                     public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        freindList.handleMessage(new Message());
                         Map<String , Object > mp = (Map<String, Object>) dataSnapshot.getValue();
                         String name = (String) mp.get("name");
                         String message = (String) mp.get("message");
                         String email = (String) mp.get("email");
 
                         LastMessage lastMessage = new LastMessage(name , message , email);
+
+                        for(int i = 0 ; i < mModels.size() ; i++){
+                            if( mModels.get(i).equals(lastMessage)) {
+                                mModels.get(i).setMessage(lastMessage.getMessage());
+                                while (i != 0) {
+                                    i = mModels.indexOf(lastMessage);
+                                    Collections.swap(mModels , i , i-1);
+                                }
+                            }
+                        }
 
                         for(LastMessage msg : mModels){
                             if(msg.equals(lastMessage)){
@@ -116,13 +137,15 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
 
                     @Override
                     public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                        freindList.handleMessage(new Message());
                     }
 
                     @Override
                     public void onCancelled(FirebaseError firebaseError) {
-
+                        freindList.handleMessage(new Message());
                     }
+
+
                 });
         }
 

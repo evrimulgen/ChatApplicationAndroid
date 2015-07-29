@@ -82,7 +82,7 @@ public class Login extends ActionBarActivity implements ChatView{
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context , SignUpEmailAndPassowrd.class);
+                Intent intent = new Intent(context, SignUpEmailAndPassowrd.class);
                 context.startActivity(intent);
             }
         });
@@ -162,7 +162,7 @@ public class Login extends ActionBarActivity implements ChatView{
 
     @Override
     public void handleMessage(Message msg) {
-        // showToastMessage("get to login activity with status is " + msg.obj);
+        // // showToastMessage("get to login activity with status is " + msg.obj);
         VALIDATION status = (VALIDATION) msg.obj;
         emailTextView.setError(null);
         passwordTextView.setError(null);

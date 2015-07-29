@@ -106,8 +106,17 @@ public class ReceiveService extends Service{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        myUser = (User) intent.getExtras().getSerializable(Utility.MY_USER);
+
+        User newMyUser = (User) intent.getExtras().getSerializable(Utility.MY_USER);
         freindUser = (User) intent.getExtras().getSerializable(Utility.FREIND_USER);
+
+        if(newMyUser == null)
+            return 0;
+
+        myUser = newMyUser;
+
+        if(myUser == null)
+            return 0;
 
         if(freindUser != null)
             System.out.println("service data :: start my mail is " +  Utility.removeDot(myUser.getEmail()) +

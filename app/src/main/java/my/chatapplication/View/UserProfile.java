@@ -1,5 +1,6 @@
 package my.chatapplication.View;
 
+import android.content.Intent;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class UserProfile extends ActionBarActivity implements ChatView{
     private User user;
     private TextView name;
     private TextView phoneNumber;
+    private TextView email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +42,15 @@ public class UserProfile extends ActionBarActivity implements ChatView{
     private void initXml() {
         phoneNumber = (TextView) findViewById(R.id.userProfile_phone);
         name = (TextView) findViewById(R.id.userProfile_name);
+        email = (TextView) findViewById(R.id.userProfile_email);
 
         phoneNumber.setText(user.getTelephone());
         name.setText(user.getName());
+        email.setText(user.getEmail());
     }
 
     private void showToastMessage(String s) {
-        Toast.makeText(this , s , Toast.LENGTH_LONG).show();
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -73,6 +77,7 @@ public class UserProfile extends ActionBarActivity implements ChatView{
 
     @Override
     public void handleMessage(Message msg) {
-        showToastMessage(msg.obj.toString());
+        // showToastMessage(msg.obj.toString());
     }
+
 }

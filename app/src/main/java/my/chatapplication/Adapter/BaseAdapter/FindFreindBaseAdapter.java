@@ -76,7 +76,7 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 findFreindAdapter.handleMessage(new Message());
-                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString(), activity);
+                // showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString(), activity);
                 T model = dataSnapshot.getValue(FindFreindBaseAdapter.this.mModelClass);
                 mModelKeys.put(dataSnapshot.getKey(), model);
 
@@ -100,7 +100,7 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 findFreindAdapter.handleMessage(new Message());
-                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
+                // showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
                 // One of the mModels changed. Replace it in our list and name mapping
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);
@@ -116,7 +116,7 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 findFreindAdapter.handleMessage(new Message());
-                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
+                // showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
                 // A model was removed from the list. Remove it from our list and the name mapping
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);
@@ -128,7 +128,7 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
                 findFreindAdapter.handleMessage(new Message());
-                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
+                // showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
                 // A model changed position in the list. Update our list accordingly
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);

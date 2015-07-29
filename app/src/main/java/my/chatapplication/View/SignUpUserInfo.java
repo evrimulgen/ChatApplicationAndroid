@@ -159,7 +159,7 @@ public class SignUpUserInfo extends ActionBarActivity implements ChatView{
                 break;
             case ACCEPTED:
                 Intent intent = new Intent(this , Home.class);
-                showToastMessage(user.toString());
+                // showToastMessage(user.toString());
                 intent.putExtra("user" , user);
                 startActivity(intent);
                 return ;
@@ -174,6 +174,6 @@ public class SignUpUserInfo extends ActionBarActivity implements ChatView{
         }
 
         focusView.requestFocus();
-
     }
+
 }

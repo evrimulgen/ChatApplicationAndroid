@@ -20,6 +20,7 @@ import my.chatapplication.View.Login;
 import my.chatapplication.View.SignUpEmailAndPassowrd;
 import my.chatapplication.View.SignUpUserInfo;
 import my.chatapplication.View.UserProfile;
+import my.chatapplication.View.Welcome;
 
 /**
  * Created by nasser on 22/07/15.
@@ -57,6 +58,9 @@ public class UserController extends Handler {
                 break;
             case FREIND_LIST_ADAPTER:
                 this.classView = ((FreindListAdatper)classView);
+                break;
+            case WELCOME:
+                this.classView = ((Welcome)classView);
                 break;
         }
         uModule = new UMSFireBase(this , context);
@@ -109,11 +113,11 @@ public class UserController extends Handler {
         Message msg = new Message();
         switch (status){
             case ACCEPTED:
-                // showToastMessage("Accepted state in UserControll and start login");
+                // // showToastMessage("Accepted state in UserControll and start login");
                 uModule.login(email, password);
                 break;
             default:
-                // showToastMessage("false and handle message");
+                // // showToastMessage("false and handle message");
                 msg.obj = status;
                 classView.handleMessage(msg);
                 break;
@@ -125,11 +129,11 @@ public class UserController extends Handler {
         Message msg = new Message();
         switch (status){
             case ACCEPTED:
-                // showToastMessage("Accepted state in UserControll and start login");
+                // // showToastMessage("Accepted state in UserControll and start login");
                 uModule.insertUser(email, password);
                 break;
             default:
-                // showToastMessage("false and handle message");
+                // // showToastMessage("false and handle message");
                 msg.obj = status;
                 classView.handleMessage(msg);
                 break;
@@ -138,11 +142,11 @@ public class UserController extends Handler {
 
     @Override
     public void handleMessage(Message msg) {
-        // showToastMessage("msg in UserControll " + msg.obj);
+        // // showToastMessage("msg in UserControll " + msg.obj);
         classView.handleMessage(msg);
     }
 
-    private void showToastMessage(String s) {
+    private void  showToastMessage(String s) {
         Toast.makeText(context , s , Toast.LENGTH_LONG).show();
     }
 

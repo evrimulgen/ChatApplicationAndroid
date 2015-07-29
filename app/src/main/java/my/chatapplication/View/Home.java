@@ -45,6 +45,7 @@ public class Home extends ActionBarActivity implements ChatView{
         setContentView(R.layout.activity_main);
 //        Intent intent = new Intent(this , NavigationBar.class);
 //        startActivity(intent);
+
         userController = new UserController(this , CLASSES.HOME , this);
     }
 
@@ -56,7 +57,7 @@ public class Home extends ActionBarActivity implements ChatView{
         onClickListner();
 
         user = (User) getIntent().getExtras().getSerializable("user");
-        showToastMessage(user.toString());
+        // showToastMessage(user.toString());
 
 
         if(user.getName().equals("") || user.getTelephone().equals("")){
@@ -77,7 +78,7 @@ public class Home extends ActionBarActivity implements ChatView{
             @Override
             public void onClick(View view) {
                 userController.logOut();
-                Intent intent = new Intent(context , Login.class);
+                Intent intent = new Intent(context, Login.class);
                 startActivity(intent);
             }
         });
@@ -94,8 +95,8 @@ public class Home extends ActionBarActivity implements ChatView{
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context , UserProfile.class);
-                intent.putExtra("user" , user);
+                Intent intent = new Intent(context, UserProfile.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });
@@ -103,7 +104,7 @@ public class Home extends ActionBarActivity implements ChatView{
         findFreind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context , FindFreind.class);
+                Intent intent = new Intent(context, FindFreind.class);
                 startActivity(intent);
             }
         });
@@ -190,7 +191,7 @@ public class Home extends ActionBarActivity implements ChatView{
                 startService(intent);
                 break;
             case -1: // not connected
-                showToastMessage("not connected");
+                // showToastMessage("not connected");
                 break;
         }
         showProgress(false);
@@ -198,5 +199,11 @@ public class Home extends ActionBarActivity implements ChatView{
 
     private void showToastMessage(String message) {
         Toast.makeText(this , message , Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.exit(0);
     }
 }

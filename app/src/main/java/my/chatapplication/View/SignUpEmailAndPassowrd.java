@@ -219,5 +219,4 @@ public class SignUpEmailAndPassowrd extends ActionBarActivity implements ChatVie
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
-
 }

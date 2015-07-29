@@ -95,7 +95,7 @@ public class FindFreind extends ListActivity implements ChatView{
         email.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-//                showToastMessage(textView.getText().toString());
+//                // showToastMessage(textView.getText().toString());
                 showProgress(true);
                 mFindFreindAdapter.startListner(textView.getText().toString());
                 return false;

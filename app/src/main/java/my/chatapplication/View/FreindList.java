@@ -1,8 +1,13 @@
 package my.chatapplication.View;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.os.Build;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,11 +31,11 @@ import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
 import my.chatapplication.Service.Utility;
 
-public class FreindList extends ListActivity {
+public class FreindList extends ListActivity implements ChatView{
 
     private UserController userController;
     private EditText email;
-    private View homeFormView;
+    private View freindListFormView;
     private View progressView;
 
     private ValueEventListener mConnectedListener;
@@ -38,16 +43,18 @@ public class FreindList extends ListActivity {
     private Intent intent;
     private User user;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_freind_list);
         user = (User) getIntent().getExtras().getSerializable(Utility.MY_USER);
-        showToastMessage(user.toString());
+        // showToastMessage(user.toString());
+
     }
 
     private void showToastMessage(String msg) {
-        Toast.makeText(this , msg , Toast.LENGTH_LONG).show();
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -65,7 +72,7 @@ public class FreindList extends ListActivity {
         final ListView listView = getListView();
         // Tell our list adapter that we only want 50 messages at a time
         System.out.println("listen service :: initliaze freind list adapter");
-        mFreindAdapter   = new FreindListAdatper( R.layout.last_message_item , this , user);
+        mFreindAdapter   = new FreindListAdatper( R.layout.last_message_item , this , user , this);
 
         listView.setAdapter(mFreindAdapter);
 
@@ -77,8 +84,49 @@ public class FreindList extends ListActivity {
             }
         });
 
+        freindListFormView = findViewById(R.id.freindList_form);
+        progressView = findViewById(R.id.freindList_progress);
+
+        showProgress(true);
+
     }
 
+    /**
+     * Shows the progress UI and hides the login form.
+     * @param show is boolean to show progress or no
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    public void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            freindListFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            freindListFormView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    freindListFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            freindListFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -93,5 +141,10 @@ public class FreindList extends ListActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void handleMessage(Message msg) {
+        showProgress(false);
     }
 }
