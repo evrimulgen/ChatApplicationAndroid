@@ -68,6 +68,11 @@ public class User implements Serializable{
     public User() {
     }
 
+    public User(String email , String name){
+        this.email = email;
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "User{" +

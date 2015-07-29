@@ -6,6 +6,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import my.chatapplication.Adapter.FreindListAdatper;
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.Model.UMSFireBase;
 import my.chatapplication.Model.UMSQLController;
@@ -57,6 +58,9 @@ public class UserController extends Handler {
                 break;
             case CHAT_ACTIVITY:
                 this.classView = ((ChatActivity)classView);
+                break;
+            case FREIND_LIST_ADAPTER:
+                this.classView = ((FreindListAdatper)classView);
                 break;
         }
         uModule = new UMSFireBase(this , context);

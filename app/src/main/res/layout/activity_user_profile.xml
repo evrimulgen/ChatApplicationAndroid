@@ -22,15 +22,14 @@
             android:src="@drawable/ic_launcher"
             />
 
-        <ImageButton
-            android:layout_margin="10dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_photo_camera_white_36dp"
-            android:background="@drawable/circule"
-            android:id="@+id/imageButton"
-            android:layout_gravity="right|bottom" />
-
+        <!--<ImageButton-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:src="@drawable/ic_photo_camera_white_36dp"-->
+            <!--android:background="@drawable/circule"-->
+            <!--android:id="@+id/imageButton"-->
+            <!--android:layout_gravity="right|bottom" />-->
 
     </FrameLayout>
 

@@ -85,7 +85,8 @@ public class Home extends ActionBarActivity implements ChatView{
         chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context , ChatActivity.class);
+                Intent intent = new Intent(context , FreindList.class);
+                intent.putExtra(Utility.MY_USER , user);
                 startActivity(intent);
             }
         });

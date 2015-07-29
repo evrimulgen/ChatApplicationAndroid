@@ -18,10 +18,14 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.security.Timestamp;
+import java.util.Date;
+
 import my.chatapplication.Controller.UserController;
 import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.DataHolder.Chat;
 import my.chatapplication.Adapter.ChatListAdapter;
+import my.chatapplication.DataHolder.LastMessage;
 import my.chatapplication.DataHolder.NotificationDomain;
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.Service.ChatNotificationService;
@@ -146,7 +150,7 @@ public class ChatActivity extends ListActivity  implements ChatView{
         mChatListAdapter.cleanup();
 
         intent = new Intent(this, ReceiveService.class);
-        intent.putExtra(Utility.MY_USER , myUser);
+        intent.putExtra(Utility.MY_USER, myUser);
         startService(intent);
 
         notificationService.removeMessageNotification(freindUser.getEmail());
@@ -163,7 +167,13 @@ public class ChatActivity extends ListActivity  implements ChatView{
             mFirebaseRef.push().setValue(chat);
             inputText.setText("");
             showToastMessage(myUser.toString());
-            notificationService.pushMessageNotification(new NotificationDomain(myUser.getName() , input), freindUser.getEmail());
+//            String name, String message, String email
+            notificationService.pushMessageNotification(new NotificationDomain(myUser.getName(), input , myUser.getEmail()), freindUser.getEmail());
+            notificationService.setMyMail(myUser.getEmail());
+            notificationService.addFreind(new LastMessage(freindUser.getName(), input, freindUser.getEmail()));
+            notificationService.setMyMail(freindUser.getEmail());
+            notificationService.addFreind(new LastMessage(myUser.getName(), input , myUser.getEmail()));
+
         }
     }
 

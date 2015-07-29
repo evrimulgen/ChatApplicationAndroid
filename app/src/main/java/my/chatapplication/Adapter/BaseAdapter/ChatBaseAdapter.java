@@ -1,4 +1,4 @@
-package my.chatapplication.Adapter;
+package my.chatapplication.Adapter.BaseAdapter;
 
 import android.app.Activity;
 import android.util.Log;
@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -30,7 +29,7 @@ import java.util.Map;
  *
  * @param <T> The class type to use as a model for the data contained in the children of the given Firebase location
  */
-public abstract class FindFreindListAdapter<T> extends BaseAdapter{
+public abstract class ChatBaseAdapter<T> extends BaseAdapter{
 
     private Query mRef;
     private Class<T> mModelClass;
@@ -39,40 +38,30 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
     private List<T> mModels;
     private Map<String, T> mModelKeys;
     private ChildEventListener mListener;
-    private FindFreindListAdapter<T> context = this;
-    private Activity activity;
+    private ChatBaseAdapter<T> context = this;
 
     /**
      * @param mRef        The Firebase location to watch for data changes. Can also be a slice of a location, using some
      *                    combination of <code>limit()</code>, <code>startAt()</code>, and <code>endAt()</code>,
      * @param mModelClass Firebase will marshall the data at a location into an instance of a class that you provide
      * @param mLayout     This is the mLayout used to represent a single list item. You will be responsible for populating an
- *                    instance of the corresponding view with the data from an instance of mModelClass.
+     *                    instance of the corresponding view with the data from an instance of mModelClass.
      * @param activity    The activity containing the ListView
-
      */
-    public FindFreindListAdapter(Query mRef, Class<T> mModelClass, int mLayout, final Activity activity) {
-        cleanup();
-        this.mRef =   mRef;
+    public ChatBaseAdapter(Query mRef, Class<T> mModelClass, int mLayout, Activity activity) {
+        this.mRef = mRef;
         this.mModelClass = mModelClass;
         this.mLayout = mLayout;
         mInflater = activity.getLayoutInflater();
         mModels = new ArrayList<T>();
         mModelKeys = new HashMap<String, T>();
-        this.activity = activity;
-    }
-
-    public void initListner(String phoneNumber){
-        cleanup();
-        Query newmRef = this.mRef.orderByChild("telephone").equalTo(phoneNumber);
 
         // Look for all child events. We will then map them to our own internal ArrayList, which backs ListView
-        mListener = newmRef.addChildEventListener(new ChildEventListener() {
+        mListener = this.mRef.addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
-                T model = dataSnapshot.getValue(FindFreindListAdapter.this.mModelClass);
+                T model = dataSnapshot.getValue(ChatBaseAdapter.this.mModelClass);
                 mModelKeys.put(dataSnapshot.getKey(), model);
 
                 // Insert into the correct location, based on previousChildName
@@ -94,11 +83,11 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
+
                 // One of the mModels changed. Replace it in our list and name mapping
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);
-                T newModel = dataSnapshot.getValue(FindFreindListAdapter.this.mModelClass);
+                T newModel = dataSnapshot.getValue(ChatBaseAdapter.this.mModelClass);
                 int index = mModels.indexOf(oldModel);
 
                 mModels.set(index, newModel);
@@ -109,7 +98,7 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
+
                 // A model was removed from the list. Remove it from our list and the name mapping
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);
@@ -120,11 +109,11 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
+
                 // A model changed position in the list. Update our list accordingly
                 String modelName = dataSnapshot.getKey();
                 T oldModel = mModelKeys.get(modelName);
-                T newModel = dataSnapshot.getValue(FindFreindListAdapter.this.mModelClass);
+                T newModel = dataSnapshot.getValue(ChatBaseAdapter.this.mModelClass);
                 int index = mModels.indexOf(oldModel);
                 mModels.remove(index);
                 if (previousChildName == null) {
@@ -144,31 +133,18 @@ public abstract class FindFreindListAdapter<T> extends BaseAdapter{
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
-                Log.e("FirebaseListAdapter", "Listen was cancelled, no more updates will occur");
+                Log.e("ChatBaseAdapter", "Listen was cancelled, no more updates will occur");
                 System.out.println("FIREBASE ADAPTER CANCELED");
             }
 
         });
     }
 
-
-
-    public void showToastMessage(String s , Activity activity){
-        Toast.makeText(activity , s , Toast.LENGTH_LONG).show();
-    }
-
     public void cleanup() {
-
         // We're being destroyed, let go of our mListener and forget about all of the mModels
-        if(mListener != null)
-            mRef.removeEventListener(mListener);
-
-        if(mModels != null)
-            mModels.clear();
-
-        if(mModelKeys != null)
-            mModelKeys.clear();
+        mRef.removeEventListener(mListener);
+        mModels.clear();
+        mModelKeys.clear();
     }
 
     @Override

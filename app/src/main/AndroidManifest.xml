@@ -58,6 +58,10 @@
             android:name=".View.FindFreind"
             android:label="@string/title_activity_find_freind" >
         </activity>
+        <activity
+            android:name=".View.FreindList"
+            android:label="@string/title_activity_freind_list" >
+        </activity>
     </application>
 
 </manifest>

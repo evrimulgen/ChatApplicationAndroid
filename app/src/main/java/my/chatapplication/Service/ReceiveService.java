@@ -7,6 +7,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Message;
 import android.view.LayoutInflater;
 
 import com.firebase.client.ChildEventListener;
@@ -14,13 +15,19 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
 import java.util.List;
 import java.util.Map;
 
+import my.chatapplication.Controller.UserController;
 import my.chatapplication.DataHolder.Chat;
+import my.chatapplication.DataHolder.NotificationDomain;
 import my.chatapplication.DataHolder.User;
+import my.chatapplication.DataHolder.VALIDATION;
 import my.chatapplication.R;
+import my.chatapplication.View.ChatActivity;
+import my.chatapplication.View.ChatView;
 
 /**
  * @author greg
@@ -36,29 +43,35 @@ import my.chatapplication.R;
 public class ReceiveService extends Service{
 
     private final String NO_MAIL = "No Mail";
-
+    private Firebase myFirebaseRef = new Firebase("https://sngvsimplechatapp.firebaseio.com") ;
     private Query mRef;
     private List<Chat> mModels;
     private ChildEventListener mListener;
     private boolean firstTime = false;
     private ChildEventListener firebaselisnter;
-
+    private UserController userController;
     private User myUser , freindUser;
 
     private Firebase firebase = new Firebase("https://sngvsimplechatapp.firebaseio.com/Notification");
 
-    public void showNotification(Chat chat){
+    public void showNotification(NotificationDomain chat){
         //We get a reference to the NotificationManager
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Notification mNotification = new Notification(R.drawable.firebase_logo, chat.getAuthor(), System.currentTimeMillis() );
+        Notification mNotification = new Notification(R.drawable.firebase_logo, chat.getName(), System.currentTimeMillis() );
         //The three parameters are: 1. an icon, 2. a title, 3. time when the notification appears
 
-        String MyNotificationTitle = chat.getAuthor();
+        String MyNotificationTitle = chat.getName();
         String MyNotificationText  = chat.getMessage();
 
-        Intent MyIntent = new Intent(Intent.ACTION_VIEW);
-        PendingIntent StartIntent = PendingIntent.getActivity(getApplicationContext(), 0, MyIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent MyIntent = new Intent(this , ChatActivity.class);
+        MyIntent.putExtra(Utility.FREIND_USER , new User(chat.getEmail() , chat.getName()));
+        PendingIntent StartIntent = PendingIntent.getActivity(
+                getApplicationContext(),
+                0,
+                MyIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+
         //A PendingIntent will be fired when the notification is clicked. The FLAG_CANCEL_CURRENT flag cancels the pendingintent
 
         mNotification.setLatestEventInfo(getApplicationContext(), MyNotificationTitle, MyNotificationText, StartIntent);
@@ -92,6 +105,7 @@ public class ReceiveService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         myUser = (User) intent.getExtras().getSerializable(Utility.MY_USER);
         freindUser = (User) intent.getExtras().getSerializable(Utility.FREIND_USER);
 
@@ -116,9 +130,11 @@ public class ReceiveService extends Service{
                         return ;
 
                 Map<String, Object> newPost = (Map<String, Object>) snapshot.getValue();
-                String author = (String) newPost.get("author");
+                String author = (String) newPost.get("name");
                 String message = (String) newPost.get("message");
-                showNotification(new Chat(message, author));
+                String email = (String) newPost.get("email");
+
+                showNotification(new NotificationDomain(author,message, email));
             }
 
             @Override
@@ -130,8 +146,9 @@ public class ReceiveService extends Service{
                     return ;
 
                 String message = (String) snapshot.child("message").getValue();
-                String author = (String) snapshot.child("author").getValue();
-                showNotification(new Chat(message, author));
+                String author = (String) snapshot.child("name").getValue();
+                String email = (String) snapshot.child("email").getValue();
+                showNotification(new NotificationDomain(author ,message, email));
             }
 
             @Override

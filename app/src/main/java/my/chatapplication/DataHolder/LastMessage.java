@@ -1,21 +1,29 @@
 package my.chatapplication.DataHolder;
 
+import java.security.Timestamp;
+
 /**
- * Created by nasser on 28/07/15.
+ * Created by nasser on 29/07/15.
  */
-public class NotificationDomain {
+public class LastMessage {
     String name;
     String message;
     String email;
 
-    public NotificationDomain(String name, String message) {
-        this.name = name;
-        this.message = message;
+    public LastMessage() {
     }
 
-    public NotificationDomain(String name, String message, String email) {
+    public LastMessage(String name, String message , String email) {
         this.name = name;
         this.message = message;
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -35,11 +43,8 @@ public class NotificationDomain {
         this.message = message;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public String toString() {
+        return "name " + getName() + " email " + email + " message " + message ;
     }
 }

@@ -8,16 +8,16 @@ import android.widget.TextView;
 
 import com.firebase.client.Query;
 
+import my.chatapplication.Adapter.BaseAdapter.FindFreindBaseAdapter;
 import my.chatapplication.DataHolder.User;
 import my.chatapplication.R;
 import my.chatapplication.Service.Utility;
 import my.chatapplication.View.ChatActivity;
-import my.chatapplication.View.FindFreind;
 
 /**
  * Created by nasser on 28/07/15.
  */
-public class FindFreindAdapter extends FindFreindListAdapter<User> {
+public class FindFreindAdapter extends FindFreindBaseAdapter<User> {
     String email;
     Query mRef;
     Activity activity;

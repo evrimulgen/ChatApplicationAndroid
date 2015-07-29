@@ -43,5 +43,6 @@
     <string name="userProfile_name">enter your name</string>
     <string name="title_activity_find_freind">FindFreind</string>
     <string name="findFreind_phoneNumber">enter phone number</string>
+    <string name="title_activity_freind_list">FreindList</string>
 
 </resources>
