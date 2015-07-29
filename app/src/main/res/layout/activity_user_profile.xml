@@ -46,13 +46,14 @@
         android:paddingLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_person_pin_48pt_3x"
                 android:paddingRight="10dp"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/userProfile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +75,7 @@
                 android:src="@drawable/ic_phone_3x"
                 android:paddingRight="10dp"/>
 
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/userProfile_phone"

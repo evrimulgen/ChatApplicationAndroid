@@ -61,7 +61,7 @@ public class FindFreind extends ListActivity implements ChatView{
         // Setup our view and list adapter. Ensure it scrolls to the bottom as data changes
         final ListView listView = getListView();
         // Tell our list adapter that we only want 50 messages at a time
-        mFindFreindAdapter = new FindFreindAdapter(mFirebaseRef , this, R.layout.find_freind_item , "");
+        mFindFreindAdapter = new FindFreindAdapter(mFirebaseRef , this, R.layout.find_freind_item , "" , this);
         listView.setAdapter(mFindFreindAdapter);
         mFindFreindAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -95,7 +95,8 @@ public class FindFreind extends ListActivity implements ChatView{
         email.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                showToastMessage(textView.getText().toString());
+//                showToastMessage(textView.getText().toString());
+                showProgress(true);
                 mFindFreindAdapter.startListner(textView.getText().toString());
                 return false;
             }
@@ -137,6 +138,7 @@ public class FindFreind extends ListActivity implements ChatView{
 
     @Override
     public void handleMessage(Message msg) {
+        showProgress(false);
     }
 
 

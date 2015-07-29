@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <application
+    <activity
         android:name=".Service.ChatApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,29 +20,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Navigation.NavigationBar"
             android:theme="@style/MainHeader" />
+
         <activity
             android:name=".View.ChatActivity"
             android:label="@string/title_chat"
             android:parentActivityName=".View.Home"
             android:theme="@style/AppTheme" />
+
         <activity
             android:name=".View.Home"
             android:label="@string/title_home"
             android:noHistory="true" />
+
         <activity
             android:name=".View.SignUpEmailAndPassowrd"
             android:label="@string/title_sign_up"
             android:parentActivityName=".View.Login" />
+
         <activity
             android:name=".View.SignUpUserInfo"
-            android:label="@string/title_user_domain" />
+            android:label="@string/title_user_domain"
+            android:parentActivityName=".View.Login"/>
+
         <activity
             android:name=".View.UserProfile"
             android:label="@string/title_profile"
-            android:parentActivityName=".View.Home" >
+            android:parentActivityName="my.chatapplication.View.Home">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="my.chatapplication.View.Home" />
         </activity>
 
         <service
@@ -50,14 +60,14 @@
             android:label="Chat Service" />
 
         <activity
-            android:name=".View.ListFreind"
-            android:label="@string/title_list_freind"
-            android:parentActivityName=".View.Home" >
-        </activity>
-        <activity
             android:name=".View.FindFreind"
-            android:label="@string/title_activity_find_freind" >
+            android:label="@string/title_activity_find_freind"
+            android:parentActivityName="my.chatapplication.View.Home">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="my.chatapplication.View.Home" />
         </activity>
+
         <activity
             android:name=".View.FreindList"
             android:label="@string/title_activity_freind_list" >

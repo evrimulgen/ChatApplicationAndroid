@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.Controller.UserController;
@@ -16,8 +19,8 @@ import my.chatapplication.R;
 public class UserProfile extends ActionBarActivity implements ChatView{
     private UserController userController;
     private User user;
-    private EditText name;
-    private EditText phoneNumber;
+    private TextView name;
+    private TextView phoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +38,8 @@ public class UserProfile extends ActionBarActivity implements ChatView{
     }
 
     private void initXml() {
-        phoneNumber = (EditText) findViewById(R.id.userProfile_phone);
-        name = (EditText) findViewById(R.id.userProfile_name);
+        phoneNumber = (TextView) findViewById(R.id.userProfile_phone);
+        name = (TextView) findViewById(R.id.userProfile_name);
 
         phoneNumber.setText(user.getTelephone());
         name.setText(user.getName());

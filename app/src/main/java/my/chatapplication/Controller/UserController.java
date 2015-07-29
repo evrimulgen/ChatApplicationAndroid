@@ -16,7 +16,6 @@ import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.DataHolder.VALIDATION;
 import my.chatapplication.View.FindFreind;
 import my.chatapplication.View.Home;
-import my.chatapplication.View.ListFreind;
 import my.chatapplication.View.Login;
 import my.chatapplication.View.SignUpEmailAndPassowrd;
 import my.chatapplication.View.SignUpUserInfo;
@@ -49,9 +48,6 @@ public class UserController extends Handler {
                 break;
             case HOME:
                 this.classView = ((Home)classView);
-                break;
-            case LIST_FREIND:
-                this.classView = ((ListFreind)classView);
                 break;
             case FIND_FREIND:
                 this.classView = ((FindFreind)classView);

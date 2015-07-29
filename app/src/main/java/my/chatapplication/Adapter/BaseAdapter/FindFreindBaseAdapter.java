@@ -1,6 +1,7 @@
 package my.chatapplication.Adapter.BaseAdapter;
 
 import android.app.Activity;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import my.chatapplication.Adapter.FindFreindAdapter;
 
 /**
  * @author greg
@@ -52,7 +55,7 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
      * @param activity    The activity containing the ListView
 
      */
-    public FindFreindBaseAdapter(Query mRef, Class<T> mModelClass, int mLayout, final Activity activity) {
+    public FindFreindBaseAdapter(Query mRef, Class<T> mModelClass, int mLayout, final Activity activity ) {
         cleanup();
         this.mRef =   mRef;
         this.mModelClass = mModelClass;
@@ -63,7 +66,7 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
         this.activity = activity;
     }
 
-    public void initListner(String phoneNumber){
+    public void initListner(String phoneNumber , final FindFreindAdapter findFreindAdapter){
         cleanup();
         Query newmRef = this.mRef.orderByChild("telephone").equalTo(phoneNumber);
 
@@ -72,7 +75,8 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
+                findFreindAdapter.handleMessage(new Message());
+                showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString(), activity);
                 T model = dataSnapshot.getValue(FindFreindBaseAdapter.this.mModelClass);
                 mModelKeys.put(dataSnapshot.getKey(), model);
 
@@ -95,6 +99,7 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                findFreindAdapter.handleMessage(new Message());
                 showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
                 // One of the mModels changed. Replace it in our list and name mapping
                 String modelName = dataSnapshot.getKey();
@@ -110,6 +115,7 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                findFreindAdapter.handleMessage(new Message());
                 showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
                 // A model was removed from the list. Remove it from our list and the name mapping
                 String modelName = dataSnapshot.getKey();
@@ -121,6 +127,7 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+                findFreindAdapter.handleMessage(new Message());
                 showToastMessage("DATA ADDED :: " + dataSnapshot.getValue().toString() , activity);
                 // A model changed position in the list. Update our list accordingly
                 String modelName = dataSnapshot.getKey();
@@ -145,7 +152,7 @@ public abstract class FindFreindBaseAdapter<T> extends BaseAdapter{
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                findFreindAdapter.handleMessage(new Message());
                 Log.e("ChatBaseAdapter", "Listen was cancelled, no more updates will occur");
                 System.out.println("FIREBASE ADAPTER CANCELED");
             }

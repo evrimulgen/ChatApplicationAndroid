@@ -19,6 +19,7 @@
         android:singleLine="true" />
 
     <ProgressBar
+        android:gravity="center_vertical|center_horizontal"
         android:id="@+id/findFreind_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
