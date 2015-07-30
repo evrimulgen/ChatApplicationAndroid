@@ -12,10 +12,9 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".View.Welcome"
-            android:label="@string/title_activity_welcome"
             android:icon="@drawable/ma3ana_logo"
-            android:noHistory="true"
-             >
+            android:label="@string/title_activity_welcome"
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,30 +24,24 @@
         <activity
             android:name=".Navigation.NavigationBar"
             android:theme="@style/MainHeader" />
-
         <activity
             android:name=".View.ChatActivity"
             android:label="@string/title_chat"
             android:parentActivityName=".View.FreindList"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".View.Home"
-            android:label="@string/title_home"
-            >
+            android:label="@string/title_home" >
         </activity>
-
         <activity
             android:name=".View.SignUpEmailAndPassowrd"
             android:label="@string/title_sign_up"
             android:noHistory="true" />
-
         <activity
             android:name=".View.SignUpUserInfo"
             android:label="@string/title_user_domain"
             android:noHistory="true"
             android:parentActivityName=".View.Welcome" />
-
         <activity
             android:name=".View.UserProfile"
             android:label="@string/title_profile"
@@ -68,7 +61,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="my.chatapplication.View.Home" />
         </activity>
-
         <activity
             android:name=".View.FreindList"
             android:label="@string/title_activity_freind_list"
@@ -77,11 +69,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="my.chatapplication.View.Home" />
         </activity>
-
         <activity
             android:name=".View.Login"
             android:label="@string/title_sign_in"
-            android:noHistory="true">
+            android:noHistory="true" >
         </activity>
     </application>
 

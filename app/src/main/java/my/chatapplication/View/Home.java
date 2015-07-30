@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Message;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,12 +23,13 @@ import com.firebase.client.Firebase;
 import my.chatapplication.Controller.UserController;
 import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.DataHolder.User;
+import my.chatapplication.Navigation.NavigationBar;
 import my.chatapplication.R;
 import my.chatapplication.Service.ReceiveService;
 import my.chatapplication.Service.Utility;
 
 
-public class Home extends ActionBarActivity implements ChatView{
+public class Home extends ActionBarActivity implements ChatView ,NavigationDrawerFragment.NavigationDrawerCallbacks{
 
     private UserController userController;
     private View homeFormView;
@@ -38,14 +40,13 @@ public class Home extends ActionBarActivity implements ChatView{
     private Button profile;
     private Button findFreind;
 
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Firebase.setAndroidContext(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        Intent intent = new Intent(this , NavigationBar.class);
-//        startActivity(intent);
-
         userController = new UserController(this , CLASSES.HOME , this);
     }
 
@@ -69,7 +70,16 @@ public class Home extends ActionBarActivity implements ChatView{
             startService(intent);
         }
 
-        Utility.writeInSharedPref("mail"  , user.getEmail()  , this );
+        Utility.writeInSharedPref("mail", user.getEmail(), this);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        
+
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
     private void onClickListner() {
@@ -203,4 +213,8 @@ public class Home extends ActionBarActivity implements ChatView{
         Toast.makeText(this , message , Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+
+    }
 }
