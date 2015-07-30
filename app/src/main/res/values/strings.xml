@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ChatApplication</string>
+    <string name="app_name">Maعana</string>
     <string name="fireBaseUrl">https://sngvsimplechatapp.firebaseIO.com</string>
 
     <string name="hello_world">Hello world!</string>
