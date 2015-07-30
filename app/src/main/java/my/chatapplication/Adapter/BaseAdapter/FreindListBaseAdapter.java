@@ -14,6 +14,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 
+import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
 
         public void initListner(final FreindList freindList){
             cleanup();
-            Query newmRef = firebase.child(Utility.removeDot(myUser.getEmail()));
+            Query newmRef = firebase.child(Utility.removeDot(myUser.getEmail())).orderByChild("messageTime");
             System.out.println("listen service :: start " + Utility.removeDot(myUser.getEmail()));
 
             // Look for all child events. We will then map them to our own internal ArrayList, which backs ListView
@@ -74,8 +75,8 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
                         String name = (String) mp.get("name");
                         String message = (String) mp.get("message");
                         String email = (String) mp.get("email");
-
-                        mModels.add(new LastMessage(name , message , email)) ;
+                        Timestamp messageTime = (Timestamp) mp.get("messageTime");
+                        mModels.add(new LastMessage(name , message , email, messageTime)) ;
 
                         notifyDataSetChanged();
                     }
@@ -91,8 +92,8 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
                         String name = (String) mp.get("name");
                         String message = (String) mp.get("message");
                         String email = (String) mp.get("email");
-
-                        LastMessage lastMessage = new LastMessage(name , message , email);
+                        Timestamp messageTime = (Timestamp) mp.get("messageTime");
+                        LastMessage lastMessage = new LastMessage(name , message , email,messageTime);
 
                         for(int i = 0 ; i < mModels.size() ; i++){
                             if( mModels.get(i).equals(lastMessage)) {
@@ -114,8 +115,8 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
                         String name = (String) mp.get("name");
                         String message = (String) mp.get("message");
                         String email = (String) mp.get("email");
-
-                        LastMessage lastMessage = new LastMessage(name , message , email);
+                        Timestamp messageTime = (Timestamp) mp.get("messageTime");
+                        LastMessage lastMessage = new LastMessage(name , message , email, messageTime);
 
                         for(int i = 0 ; i < mModels.size() ; i++){
                             if( mModels.get(i).equals(lastMessage)) {

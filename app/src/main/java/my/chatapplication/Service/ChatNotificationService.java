@@ -2,6 +2,7 @@ package my.chatapplication.Service;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ServerValue;
 
 import my.chatapplication.DataHolder.LastMessage;
 import my.chatapplication.DataHolder.NotificationDomain;
@@ -47,14 +48,20 @@ public class ChatNotificationService {
     }
 
     public void addFreind(LastMessage lastMessage) {
-        Firebase pushNotification = firebaseFreind.child(Utility.removeDot(myMail)).child(Utility.removeDot(lastMessage.getEmail()));
+        final Firebase pushNotification = firebaseFreind.child(Utility.removeDot(myMail)).child(Utility.removeDot(lastMessage.getEmail()));
 
         pushNotification.setValue(lastMessage, new Firebase.CompletionListener() {
 
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                try{
+                    Firebase newFirebase = pushNotification.child("messageTime");
+                    newFirebase.setValue(ServerValue.TIMESTAMP);
+                } catch (Exception ex){
 
+                }
             }
         });
+
     }
 }
