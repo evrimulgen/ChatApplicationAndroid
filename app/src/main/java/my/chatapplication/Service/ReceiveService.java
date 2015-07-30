@@ -105,10 +105,16 @@ public class ReceiveService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        User newMyUser = null;
 
+        try {
 
-        User newMyUser = (User) intent.getExtras().getSerializable(Utility.MY_USER);
-        freindUser = (User) intent.getExtras().getSerializable(Utility.FREIND_USER);
+            newMyUser = (User) intent.getExtras().getSerializable(Utility.MY_USER);
+            freindUser = (User) intent.getExtras().getSerializable(Utility.FREIND_USER);
+
+        }catch(Exception e){
+
+        }
 
         if(newMyUser == null)
             return 0;

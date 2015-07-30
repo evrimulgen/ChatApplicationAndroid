@@ -14,7 +14,8 @@
             android:name=".View.Welcome"
             android:label="@string/title_activity_welcome"
             android:icon="@drawable/ma3ana_logo"
-            android:noHistory="true" >
+            android:noHistory="true"
+             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +35,8 @@
         <activity
             android:name=".View.Home"
             android:label="@string/title_home"
-             />
+            >
+        </activity>
 
         <activity
             android:name=".View.SignUpEmailAndPassowrd"
@@ -78,7 +80,8 @@
 
         <activity
             android:name=".View.Login"
-            android:label="@string/title_sign_in" >
+            android:label="@string/title_sign_in"
+            android:noHistory="true">
         </activity>
     </application>
 

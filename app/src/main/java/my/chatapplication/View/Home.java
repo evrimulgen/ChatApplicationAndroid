@@ -74,11 +74,13 @@ public class Home extends ActionBarActivity implements ChatView{
 
     private void onClickListner() {
         final Context context = this;
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 userController.logOut();
-                Intent intent = new Intent(context, Login.class);
+                Intent intent = new Intent(context, Welcome.class);
+                finish();
                 startActivity(intent);
             }
         });
@@ -201,9 +203,4 @@ public class Home extends ActionBarActivity implements ChatView{
         Toast.makeText(this , message , Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        System.exit(0);
-    }
 }
