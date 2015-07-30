@@ -76,8 +76,4 @@ public class Welcome extends ActionBarActivity  implements ChatView{
 
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        finish();
-//    }
 }
