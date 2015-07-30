@@ -2,6 +2,7 @@ package my.chatapplication.Adapter.BaseAdapter;
 
 import android.app.Activity;
 import android.os.Message;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.firebase.client.Query;
 import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,8 +77,8 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
                         String name = (String) mp.get("name");
                         String message = (String) mp.get("message");
                         String email = (String) mp.get("email");
-                        Timestamp messageTime = (Timestamp) mp.get("messageTime");
-                        mModels.add(new LastMessage(name , message , email, messageTime)) ;
+
+                        mModels.add(new LastMessage(name , message , email)) ;
 
                         notifyDataSetChanged();
                     }
@@ -92,8 +94,14 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
                         String name = (String) mp.get("name");
                         String message = (String) mp.get("message");
                         String email = (String) mp.get("email");
-                        Timestamp messageTime = (Timestamp) mp.get("messageTime");
-                        LastMessage lastMessage = new LastMessage(name , message , email,messageTime);
+//                        String messageTime = (String) mp.get("messageTime");
+//                        Date date = new Date();
+//                        date.setTime(Long.parseLong(messageTime));
+//
+//                        Timestamp timestamp ;
+
+
+                        LastMessage lastMessage = new LastMessage(name , message , email);
 
                         for(int i = 0 ; i < mModels.size() ; i++){
                             if( mModels.get(i).equals(lastMessage)) {
@@ -115,8 +123,8 @@ public abstract class FreindListBaseAdapter  extends BaseAdapter {
                         String name = (String) mp.get("name");
                         String message = (String) mp.get("message");
                         String email = (String) mp.get("email");
-                        Timestamp messageTime = (Timestamp) mp.get("messageTime");
-                        LastMessage lastMessage = new LastMessage(name , message , email, messageTime);
+
+                        LastMessage lastMessage = new LastMessage(name , message , email);
 
                         for(int i = 0 ; i < mModels.size() ; i++){
                             if( mModels.get(i).equals(lastMessage)) {

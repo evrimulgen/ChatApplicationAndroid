@@ -10,16 +10,8 @@ public class LastMessage {
     String name;
     String message;
     String email;
-    Timestamp messageTime;
 
     public LastMessage() {
-    }
-
-    public LastMessage(String name, String message , String email, Timestamp messageTime) {
-        this.name = name;
-        this.message = message;
-        this.email = email;
-        this.messageTime = messageTime;
     }
 
     public LastMessage(String name, String message , String email) {
@@ -50,14 +42,6 @@ public class LastMessage {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public Timestamp getMessageTime() {
-        return messageTime;
-    }
-
-    public void setMessageTime(Timestamp messageTime) {
-        this.messageTime = messageTime;
     }
 
     @Override
