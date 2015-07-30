@@ -3,10 +3,8 @@ package my.chatapplication.View;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
@@ -23,7 +21,6 @@ import com.firebase.client.Firebase;
 import my.chatapplication.Controller.UserController;
 import my.chatapplication.DataHolder.CLASSES;
 import my.chatapplication.DataHolder.User;
-import my.chatapplication.Navigation.NavigationBar;
 import my.chatapplication.R;
 import my.chatapplication.Service.ReceiveService;
 import my.chatapplication.Service.Utility;
@@ -46,7 +43,7 @@ public class Home extends ActionBarActivity implements ChatView ,NavigationDrawe
     protected void onCreate(Bundle savedInstanceState) {
         Firebase.setAndroidContext(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
         userController = new UserController(this , CLASSES.HOME , this);
     }
 
@@ -74,7 +71,7 @@ public class Home extends ActionBarActivity implements ChatView ,NavigationDrawe
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        
+
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -120,7 +117,6 @@ public class Home extends ActionBarActivity implements ChatView ,NavigationDrawe
                 startActivity(intent);
             }
         });
-
 
     }
 
@@ -210,11 +206,30 @@ public class Home extends ActionBarActivity implements ChatView ,NavigationDrawe
     }
 
     private void showToastMessage(String message) {
+
         Toast.makeText(this , message , Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-
+        showToastMessage(Integer.toString(position));
+//        Intent intent;
+//        switch (position){
+//            case 0:
+//                intent = new Intent(this, UserProfile.class);
+//                intent.putExtra("user", user);
+//                startActivity(intent);
+//                break;
+//            case 1:
+//                intent = new Intent(this , FreindList.class);
+//                intent.putExtra(Utility.MY_USER , user);
+//                startActivity(intent);
+//                break;
+//            case 2:
+//                intent = new Intent(this, FindFreind.class);
+//                startActivity(intent);
+//                break;
+//        }
     }
 }
+
